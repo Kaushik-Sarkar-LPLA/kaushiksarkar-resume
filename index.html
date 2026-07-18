@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kaushik Sarkar — Resume</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a2e;
+    --paper: #faf9f6;
+    --accent: #c4956a;
+    --accent-dark: #a67c52;
+    --accent-light: #e8d5c0;
+    --muted: #6b6b7b;
+    --divider: #e0ddd8;
+    --sidebar-bg: #1a1a2e;
+    --sidebar-text: #e8e6e1;
+    --sidebar-muted: #9a98a6;
+    --sidebar-accent: #c4956a;
+    --tag-bg: rgba(196,149,106,0.12);
+    --tag-border: rgba(196,149,106,0.3);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #e8e6e1;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .resume-container {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 20px auto;
+    display: grid;
+    grid-template-columns: 230px 1fr;
+    background: var(--paper);
+    box-shadow: 0 25px 80px rgba(0,0,0,0.18), 0 5px 20px rgba(0,0,0,0.08);
+    overflow: hidden;
+  }
+
+  @media print {
+    body { background: white; }
+    .resume-container { margin: 0; box-shadow: none; }
+  }
+
+  /* ========== SIDEBAR ========== */
+  .sidebar {
+    background: var(--sidebar-bg);
+    color: var(--sidebar-text);
+    padding: 40px 24px 30px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .sidebar::before {
+    content: '';
+    position: absolute;
+    top: -80px;
+    right: -80px;
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(196,149,106,0.12) 0%, transparent 70%);
+  }
+
+  .sidebar::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+  }
+
+  .avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 3px solid var(--accent);
+    object-fit: cover;
+    object-position: center top;
+    margin-bottom: 28px;
+    position: relative;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  }
+
+  .avatar-wrap {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin-bottom: 28px;
+  }
+
+  .avatar-wrap::after {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    border: 1px solid rgba(196,149,106,0.25);
+  }
+
+  .avatar-wrap img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 3px solid var(--accent);
+    object-fit: cover;
+    object-position: center top;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  }
+
+  .sidebar-section {
+    margin-bottom: 26px;
+  }
+
+  .sidebar-title {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--sidebar-accent);
+    margin-bottom: 14px;
+    position: relative;
+    padding-bottom: 8px;
+  }
+
+  .sidebar-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 20px;
+    height: 1.5px;
+    background: var(--sidebar-accent);
+  }
+
+  .contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 10px;
+    font-size: 11.5px;
+    color: var(--sidebar-muted);
+    line-height: 1.5;
+  }
+
+  .contact-icon {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    opacity: 0.6;
+  }
+
+  .contact-item a {
+    color: var(--sidebar-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .contact-item a:hover { color: var(--sidebar-accent); }
+
+  .skill-group {
+    margin-bottom: 16px;
+  }
+
+  .skill-group-label {
+    font-size: 10.5px;
+    font-weight: 600;
+    color: var(--sidebar-text);
+    margin-bottom: 7px;
+  }
+
+  .skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+
+  .skill-tag {
+    font-size: 9.5px;
+    font-weight: 500;
+    padding: 3px 8px;
+    border-radius: 3px;
+    background: rgba(196,149,106,0.08);
+    border: 1px solid rgba(196,149,106,0.18);
+    color: var(--sidebar-muted);
+    letter-spacing: 0.2px;
+  }
+
+  .edu-item {
+    margin-bottom: 14px;
+  }
+
+  .edu-degree {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--sidebar-text);
+    line-height: 1.4;
+  }
+
+  .edu-school {
+    font-size: 10px;
+    color: var(--sidebar-muted);
+    margin-top: 2px;
+  }
+
+  .edu-date {
+    font-size: 9.5px;
+    color: rgba(154,152,166,0.6);
+    margin-top: 1px;
+  }
+
+  .award-item {
+    margin-bottom: 12px;
+  }
+
+  .award-name {
+    font-size: 10.5px;
+    font-weight: 600;
+    color: var(--sidebar-text);
+    line-height: 1.3;
+  }
+
+  .award-desc {
+    font-size: 9.5px;
+    color: var(--sidebar-muted);
+    margin-top: 2px;
+    line-height: 1.4;
+  }
+
+  /* ========== MAIN CONTENT ========== */
+  .main {
+    padding: 40px 36px 30px;
+    position: relative;
+  }
+
+  .header {
+    margin-bottom: 28px;
+    position: relative;
+  }
+
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -14px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, var(--accent), var(--divider), transparent);
+  }
+
+  .name {
+    font-family: 'Playfair Display', serif;
+    font-size: 34px;
+    font-weight: 800;
+    color: var(--ink);
+    letter-spacing: -0.5px;
+    line-height: 1.1;
+  }
+
+  .title-line {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--accent-dark);
+    margin-top: 6px;
+    letter-spacing: 0.8px;
+  }
+
+  .summary {
+    margin-top: 24px;
+    font-size: 11.5px;
+    line-height: 1.7;
+    color: var(--muted);
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  .section {
+    margin-top: 24px;
+  }
+
+  .section-title {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--accent-dark);
+    margin-bottom: 16px;
+    padding-bottom: 6px;
+    border-bottom: 1.5px solid var(--accent-light);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-title::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+
+  .job {
+    margin-bottom: 20px;
+    position: relative;
+    padding-left: 16px;
+  }
+
+  .job::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 6px;
+    bottom: 0;
+    width: 1.5px;
+    background: linear-gradient(180deg, var(--accent-light) 0%, transparent 100%);
+  }
+
+  .job-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .job-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.3;
+  }
+
+  .job-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px;
+    font-weight: 500;
+    color: var(--accent-dark);
+    background: var(--tag-bg);
+    padding: 2px 8px;
+    border-radius: 3px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .job-company {
+    font-size: 11.5px;
+    font-weight: 500;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .job-location {
+    font-size: 10px;
+    color: rgba(107,107,123,0.6);
+  }
+
+  .job-desc {
+    font-size: 11px;
+    line-height: 1.65;
+    color: #4a4a5a;
+    margin-top: 8px;
+    text-align: justify;
+  }
+
+  .job-desc p {
+    margin-bottom: 4px;
+  }
+
+  .tech-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 8px;
+  }
+
+  .tech-pill {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8.5px;
+    font-weight: 500;
+    padding: 2px 7px;
+    border-radius: 2px;
+    background: rgba(26,26,46,0.04);
+    border: 1px solid rgba(26,26,46,0.08);
+    color: var(--muted);
+    letter-spacing: 0.3px;
+  }
+
+  .page-break { page-break-before: always; }
+
+  /* Decorative corner */
+  .main::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, transparent 50%, rgba(196,149,106,0.04) 50%);
+  }
+</style>
+</head>
+<body>
+
+<div class="resume-container">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="avatar-wrap"><img src="data:image/jpeg;base64,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" alt="Kaushik Sarkar"></div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-title">Contact</div>
+      <div class="contact-item">
+        <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 4l-10 8L2 4"/></svg>
+        <a href="mailto:Kaushik.sarkar@me.com">Kaushik.sarkar@me.com</a>
+      </div>
+      <div class="contact-item">
+        <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.86 19.86 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.86 19.86 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.13.81.36 1.6.68 2.35a2 2 0 01-.45 2.11L8.09 9.43a16 16 0 006.49 6.49l1.25-1.25a2 2 0 012.11-.45c.75.32 1.54.55 2.35.68A2 2 0 0122 16.92z"/></svg>
+        <span>737 259 9448</span>
+      </div>
+      <div class="contact-item">
+        <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <span>Austin, TX, USA</span>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-title">Core Skills</div>
+
+      <div class="skill-group">
+        <div class="skill-group-label">Cloud & AI</div>
+        <div class="skill-tags">
+          <span class="skill-tag">AWS</span>
+          <span class="skill-tag">RAG</span>
+          <span class="skill-tag">LLMs</span>
+          <span class="skill-tag">MCP</span>
+          <span class="skill-tag">Claude</span>
+          <span class="skill-tag">GPT-4</span>
+          <span class="skill-tag">Gemini</span>
+          <span class="skill-tag">Vector Embeddings</span>
+          <span class="skill-tag">Semantic Search</span>
+        </div>
+      </div>
+
+      <div class="skill-group">
+        <div class="skill-group-label">Backend</div>
+        <div class="skill-tags">
+          <span class="skill-tag">.NET 8</span>
+          <span class="skill-tag">C#</span>
+          <span class="skill-tag">REST APIs</span>
+          <span class="skill-tag">MuleSoft</span>
+          <span class="skill-tag">Kafka</span>
+          <span class="skill-tag">PostgreSQL</span>
+          <span class="skill-tag">SQL Server</span>
+          <span class="skill-tag">DynamoDB</span>
+          <span class="skill-tag">Lambda</span>
+        </div>
+      </div>
+
+      <div class="skill-group">
+        <div class="skill-group-label">Frontend</div>
+        <div class="skill-tags">
+          <span class="skill-tag">Angular</span>
+          <span class="skill-tag">Micro-Frontends</span>
+          <span class="skill-tag">Module Federation</span>
+          <span class="skill-tag">TypeScript</span>
+        </div>
+      </div>
+
+      <div class="skill-group">
+        <div class="skill-group-label">DevOps & Security</div>
+        <div class="skill-tags">
+          <span class="skill-tag">GitHub Actions</span>
+          <span class="skill-tag">EKS</span>
+          <span class="skill-tag">Docker</span>
+          <span class="skill-tag">SonarQube</span>
+          <span class="skill-tag">OWASP</span>
+          <span class="skill-tag">Dynatrace</span>
+          <span class="skill-tag">ForgeRock</span>
+          <span class="skill-tag">Octopus Deploy</span>
+          <span class="skill-tag">JFrog</span>
+          <span class="skill-tag">LaunchDarkly</span>
+        </div>
+      </div>
+
+      <div class="skill-group">
+        <div class="skill-group-label">Integration</div>
+        <div class="skill-tags">
+          <span class="skill-tag">TIBCO BW</span>
+          <span class="skill-tag">EMS</span>
+          <span class="skill-tag">ESB</span>
+          <span class="skill-tag">BusinessConnect</span>
+          <span class="skill-tag">eGate</span>
+          <span class="skill-tag">Elasticsearch</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-title">Education</div>
+      <div class="edu-item">
+        <div class="edu-degree">Master of Computer Application</div>
+        <div class="edu-school">Techno India — WBUT, Kolkata</div>
+        <div class="edu-date">2008</div>
+      </div>
+      <div class="edu-item">
+        <div class="edu-degree">Bachelor of Computer Application</div>
+        <div class="edu-school">Netaji Subhash Engg. College — WBUT</div>
+        <div class="edu-date">2005</div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-title">Certification</div>
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="62" height="62" style="flex-shrink:0;">
+          <!-- Outer badge shape -->
+          <polygon points="60,2 110,30 110,90 60,118 10,90 10,30" fill="#232F3E" stroke="#FF9900" stroke-width="2.5"/>
+          <!-- Inner highlight -->
+          <polygon points="60,10 104,34 104,86 60,110 16,86 16,34" fill="none" stroke="rgba(255,153,0,0.2)" stroke-width="1"/>
+          <!-- AWS smile/arrow -->
+          <path d="M38 62 Q48 72 60 66 Q72 60 82 64" stroke="#FF9900" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <path d="M76 58 L82 64 L76 66" stroke="#FF9900" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- Text: AWS -->
+          <text x="60" y="52" text-anchor="middle" font-family="Arial,sans-serif" font-size="18" font-weight="bold" fill="#FFFFFF" letter-spacing="2">AWS</text>
+          <!-- Text: CERTIFIED -->
+          <text x="60" y="82" text-anchor="middle" font-family="Arial,sans-serif" font-size="7.5" font-weight="bold" fill="#FF9900" letter-spacing="1.5">CERTIFIED</text>
+          <!-- Text: DEVELOPER -->
+          <text x="60" y="94" text-anchor="middle" font-family="Arial,sans-serif" font-size="6.5" fill="#cccccc" letter-spacing="1">DEVELOPER</text>
+          <!-- Text: ASSOCIATE -->
+          <text x="60" y="103" text-anchor="middle" font-family="Arial,sans-serif" font-size="5.5" fill="#999999" letter-spacing="0.8">ASSOCIATE</text>
+        </svg>
+        <div>
+          <div style="font-size:10.5px; font-weight:600; color:var(--sidebar-text); line-height:1.3;">AWS Certified Developer</div>
+          <div style="font-size:9.5px; color:var(--sidebar-muted); margin-top:2px;">Associate</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-title">Awards</div>
+      <div class="award-item">
+        <div class="award-name">Capgemini Project Star Award</div>
+        <div class="award-desc">Outstanding performance on TXU AM project</div>
+      </div>
+      <div class="award-item">
+        <div class="award-name">PetSmart TIBCO Infrastructure</div>
+        <div class="award-desc">Designing & implementing new TIBCO infra</div>
+      </div>
+      <div class="award-item">
+        <div class="award-name">Best Web Designer</div>
+        <div class="award-desc">Techno India web design contest winner</div>
+      </div>
+      <div class="award-item">
+        <div class="award-name">IBM E&U Sharenet Recognition</div>
+        <div class="award-desc">Energy & Utilities knowledge-sharing program</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <header class="header">
+      <h1 class="name">Kaushik Sarkar</h1>
+      <div class="title-line">AVP Tech, Software Development &nbsp;·&nbsp; Cloud, AI & Agentic Systems</div>
+    </header>
+
+    <p class="summary">
+      Software Development Leader with 19+ years of experience in enterprise application development, cloud-native architecture, and AI-powered intelligent systems. Currently building investor-facing microservices and micro-frontends at LPL Financial using .NET 8, Angular, AWS, MuleSoft, and Apache Kafka. Designing AI solutions leveraging vector embeddings, RAG, and semantic search for financial rules engines. Pioneering agentic workflows with LLMs and custom MCP server integrations for autonomous code generation, security analysis, and CI/CD orchestration. Proven expertise in secure REST API design, event-driven architectures, and enterprise integration.
+    </p>
+
+    <section class="section">
+      <h2 class="section-title">Professional Experience</h2>
+
+      <!-- LPL -->
+      <div class="job">
+        <div class="job-header">
+          <div>
+            <div class="job-title">AVP Tech, Software Development</div>
+            <div class="job-company">LPL Financial LLC <span class="job-location">· Austin, TX</span></div>
+          </div>
+          <div class="job-date">Oct 2020 — Present</div>
+        </div>
+        <div class="job-desc">
+          <p>Building secure, scalable microservices and micro-frontend applications for LPL's investor-facing AccountView platform. Lead development of Secure Messaging, Document Management, and Cash Management capabilities serving 20,000+ financial advisors and their clients.</p>
+          <p>Architect AI-powered agentic workflows using Claude, GPT-4, and Gemini to automate code generation, security analysis, architecture documentation, and developer productivity tooling. Build custom MCP server integrations and autonomous coding agents for CI/CD orchestration, PR reviews, and IaC generation.</p>
+          <p>Leverage LangChain patterns for multi-step reasoning agents interfacing with Jira, Confluence, and deployment systems. Implement CI/CD via GitHub Actions, Octopus Deploy, SonarQube, and JFrog Artifactory. Conduct IDOR pen testing and OWASP compliance reviews. Mentor offshore team and drive architectural governance.</p>
+        </div>
+        <div class="tech-stack">
+          <span class="tech-pill">.NET 8</span>
+          <span class="tech-pill">Angular</span>
+          <span class="tech-pill">AWS EKS</span>
+          <span class="tech-pill">Kafka</span>
+          <span class="tech-pill">MuleSoft</span>
+          <span class="tech-pill">PostgreSQL</span>
+          <span class="tech-pill">DynamoDB</span>
+          <span class="tech-pill">LangChain</span>
+          <span class="tech-pill">ForgeRock</span>
+          <span class="tech-pill">LaunchDarkly</span>
+        </div>
+      </div>
+
+      <!-- Infocepts / PetSmart 2019 -->
+      <div class="job">
+        <div class="job-header">
+          <div>
+            <div class="job-title">TIBCO EAI Consulting Team Lead</div>
+            <div class="job-company">Infocepts LLC — PetSmart <span class="job-location">· Phoenix, AZ</span></div>
+          </div>
+          <div class="job-date">Apr 2019 — Oct 2020</div>
+        </div>
+        <div class="job-desc">
+          <p>Led TIBCO integration project design, development, and testing for enterprise application integration. Managed infrastructure upgrade projects, solution architecture for Tibco BC, EMS, and BW. Coached and mentored team members while distributing project objectives across the solutions team.</p>
+        </div>
+        <div class="tech-stack">
+          <span class="tech-pill">TIBCO BW</span>
+          <span class="tech-pill">EMS</span>
+          <span class="tech-pill">Hawk</span>
+          <span class="tech-pill">BusinessConnect</span>
+        </div>
+      </div>
+
+      <!-- Moxie / Urban Outfitters -->
+      <div class="job">
+        <div class="job-header">
+          <div>
+            <div class="job-title">TIBCO Developer / Admin / Solutions Architect</div>
+            <div class="job-company">Moxie Systems — Urban Outfitters Inc <span class="job-location">· Philadelphia, PA</span></div>
+          </div>
+          <div class="job-date">Dec 2013 — Apr 2019</div>
+        </div>
+        <div class="job-desc">
+          <p>Served as TIBCO Infrastructure Architect, Developer & Administrator for integration project design across business interfaces. Built end-to-end EAI solutions with Tibco BW 5.x/6.x/CE, EMS, BusinessConnect, Elasticsearch, Oracle/MS SQL. Managed production support, automated deployments, and vendor root cause analysis.</p>
+        </div>
+        <div class="tech-stack">
+          <span class="tech-pill">TIBCO BW 5.x/6.x</span>
+          <span class="tech-pill">Elasticsearch</span>
+          <span class="tech-pill">Oracle</span>
+          <span class="tech-pill">MS SQL</span>
+        </div>
+      </div>
+
+      <!-- Infocepts / PetSmart 2012 -->
+      <div class="job">
+        <div class="job-header">
+          <div>
+            <div class="job-title">TIBCO EAI Consulting Team Lead</div>
+            <div class="job-company">Infocepts LLC — PetSmart <span class="job-location">· Phoenix, AZ</span></div>
+          </div>
+          <div class="job-date">Mar 2012 — Dec 2013</div>
+        </div>
+        <div class="job-desc">
+          <p>Managed integration project lifecycle — design, development, and testing of messaging middleware and EAI solutions. Led TIBCO infrastructure upgrade project and mentored cross-functional team members.</p>
+        </div>
+      </div>
+
+      <!-- Infocepts India -->
+      <div class="job">
+        <div class="job-header">
+          <div>
+            <div class="job-title">Technical Integration Lead</div>
+            <div class="job-company">Infocepts Technologies Pvt Ltd <span class="job-location">· Nagpur, India</span></div>
+          </div>
+          <div class="job-date">Oct 2011 — Feb 2012</div>
+        </div>
+        <div class="job-desc">
+          <p>Led 24×7 application management, analysis, design, and development of automated solutions for a US retail customer. Implemented ESB framework, managed user and resource administration, and drove deployment automation.</p>
+        </div>
+      </div>
+
+      <!-- IBM -->
+      <div class="job">
+        <div class="job-header">
+          <div>
+            <div class="job-title">Technical Team Lead — TIBCO / eGate Middleware</div>
+            <div class="job-company">IBM India Pvt Ltd — Oncor <span class="job-location">· Pune, India</span></div>
+          </div>
+          <div class="job-date">Nov 2009 — Oct 2011</div>
+        </div>
+        <div class="job-desc">
+          <p>Led development and 24×7 support for IBM's US customer in the electric delivery domain. Delivered complex integration solutions, managed ticket backlogs, and built AMS dashboards and transaction count automation tooling.</p>
+        </div>
+      </div>
+
+      <!-- Capgemini -->
+      <div class="job">
+        <div class="job-header">
+          <div>
+            <div class="job-title">Associate Consultant — TIBCO / eGate Middleware</div>
+            <div class="job-company">Capgemini India Pvt Ltd — TXU, Oncor <span class="job-location">· Bangalore, India</span></div>
+          </div>
+          <div class="job-date">Jun 2008 — Oct 2009</div>
+        </div>
+        <div class="job-desc">
+          <p>Developed and tested automated integration solutions for the energy & utilities sector. Implemented ESB framework in a mobile environment and provided application management support.</p>
+        </div>
+      </div>
+
+      <!-- Freelancer -->
+      <div class="job">
+        <div class="job-header">
+          <div>
+            <div class="job-title">Freelance Developer</div>
+            <div class="job-company">Self-Employed</div>
+          </div>
+          <div class="job-date">Apr 2005 — May 2008</div>
+        </div>
+        <div class="job-desc">
+          <p>Independently managed and delivered 60+ projects spanning EAI/ESB development, website development, automation, and bug fixing across diverse client engagements.</p>
+        </div>
+      </div>
+
+    </section>
+  </main>
+</div>
+
+</body>
+</html>
