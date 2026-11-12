@@ -9,16 +9,17 @@
   <meta property="og:title" content="Kaushik Sarkar — AVP Tech, Software Development">
   <meta property="og:description" content="Enterprise Software Development Leader & Architect. Cloud, AI & Agentic Systems, Distributed Architecture, .NET 8, Angular, AWS, Kafka.">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://kaushiksarkar.com">
+  <meta property="og:url" content="https://kaushiksarkar.com/resume">
+  <link rel="canonical" href="https://kaushiksarkar.com/resume">
   <meta name="theme-color" content="#ffffff">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="/favicon.png"><link rel="apple-touch-icon" href="/logo.png">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3ClinearGradient id='ksg' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%236b9be0'/%3E%3Cstop offset='1' stop-color='%2335609f'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='40' height='40' rx='10' fill='url(%23ksg)'/%3E%3Cg transform='translate(8 8)' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z'/%3E%3Cpath d='M16 8 2 22'/%3E%3Cpath d='M17.5 15H9'/%3E%3C/g%3E%3C/svg%3E">
 
   <!-- Google Fonts: Outfit (Executive Headlines & Titles), Plus Jakarta Sans (Modern Body), JetBrains Mono (Tech/Data) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Caveat:wght@700&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;800&family=Caveat:wght@700&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
     :root {
@@ -119,7 +120,6 @@
       background: none;
       box-shadow: 0 2px 8px rgba(74,123,200,0.35);
       overflow: hidden;
-      background: #fff;
       color: #ffffff;
       font-family: var(--font-heading);
       font-weight: 800;
@@ -145,15 +145,17 @@
     }
     .bn-main {
       font-family: 'Montserrat', var(--font-heading), sans-serif;
-      font-weight: 700;
-      font-size: 17px;
-      letter-spacing: -0.02em;
-      color: #1f2a3d;
+      font-size: 18px;
+      letter-spacing: -0.01em;
+      display: inline-flex;
+      gap: 5px;
     }
+    .bn-main b { font-weight: 800; color: #1f2a3d; }
+    .bn-main i { font-style: normal; font-weight: 300; background: linear-gradient(135deg,#6b9be0,#35609f); -webkit-background-clip: text; background-clip: text; color: transparent; }
     .bn-blog {
       font-family: 'Caveat', cursive;
       font-weight: 700;
-      font-size: 24px;
+      font-size: 26px;
       color: #4a7bc8;
       transform: rotate(-4deg) translateY(1px);
       display: inline-block;
@@ -215,6 +217,20 @@
       transform: translateY(-1px);
       box-shadow: 0 4px 14px rgba(74, 123, 200, 0.45);
       color: #fff;
+    }
+
+    .email-btn {
+      background: #fff;
+      color: var(--accent-dark);
+      border: 1.5px solid var(--accent);
+      border-radius: var(--radius-full);
+      padding: 7px 16px;
+    }
+    .email-btn:hover {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 4px 14px var(--accent-glow);
+      transform: translateY(-1px);
     }
 
     .action-btn-ghost {
@@ -1043,23 +1059,27 @@
       }
 
       .mobile-contact-btn {
-        display: flex;
+        display: inline-flex;
         align-items: center;
+        justify-content: center;
         gap: 8px;
-        padding: 8px 12px;
-        background: #f8fafc;
-        border: 1px solid var(--border-light);
-        border-radius: var(--radius-sm);
-        font-size: 11.5px;
-        color: var(--ink-secondary);
+        padding: 10px 20px;
+        background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+        border: none;
+        border-radius: var(--radius-full);
+        font-size: 13px;
+        color: #fff;
         text-decoration: none;
-        font-weight: 500;
-        min-height: 40px;
+        font-weight: 600;
+        min-height: 42px;
+        box-shadow: 0 4px 14px var(--accent-glow);
+        transition: transform .2s, box-shadow .2s;
       }
 
       .mobile-contact-btn:hover {
-        background: var(--accent-light);
-        color: var(--accent-dark);
+        transform: translateY(-1px);
+        box-shadow: 0 6px 18px rgba(74,123,200,0.45);
+        color: #fff;
       }
 
       .contact-list {
@@ -1237,15 +1257,17 @@
        ========================================== -->
   <header class="action-bar">
     <div class="action-bar-inner">
-      <a href="https://kaushiksarkar.com" class="action-bar-brand">
-        <div class="brand-logo" aria-label="Kaushik Sarkar logo"><img src="/logo.png" alt="Kaushik Sarkar logo" width="34" height="34" style="display:block;width:100%;height:100%;object-fit:cover"></div>
+      <a href="/" class="action-bar-brand">
+        <div class="brand-logo" aria-label="Kaushik Sarkar logo"><svg viewBox="0 0 40 40" width="34" height="34" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="ksg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6b9be0"/><stop offset="1" stop-color="#35609f"/></linearGradient></defs><rect width="40" height="40" rx="10" fill="url(#ksg)"/><g transform="translate(8 8)" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/><path d="M16 8 2 22"/><path d="M17.5 15H9"/></g></svg></div>
         <div class="brand-info">
-          <span class="brand-name"><span class="bn-main">Kaushik Sarkar</span><span class="bn-blog">Blogs</span></span>
+          <span class="brand-name"><span class="bn-main"><b>Kaushik</b><i>Sarkar</i></span><span class="bn-blog">Blogs</span></span>
           </div>
       </a>
 
       <div class="action-buttons">
-        <button onclick="window.print()" class="action-btn action-btn-primary" title="Print or Save Resume as PDF">
+        <a href="/" class="action-btn action-btn-ghost">Blogs</a>
+        <a href="/resume" class="action-btn action-btn-primary" aria-current="page">Resume</a>
+        <button onclick="window.print()" class="action-btn action-btn-ghost" title="Print or Save Resume as PDF">
           <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <polyline points="6 9 6 2 18 2 18 9"></polyline>
             <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
@@ -1254,12 +1276,12 @@
           Print / PDF
         </button>
 
-        <a href="mailto:Kaushik.sarkar@me.com" class="action-btn action-btn-ghost">
+        <a href="mailto:Kaushik.sarkar@me.com" class="action-btn email-btn">
           <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <rect x="2" y="4" width="20" height="16" rx="2"></rect>
             <path d="M22 4l-10 8L2 4"></path>
           </svg>
-          Email
+          Email Me
         </a>
 
         <a href="https://www.linkedin.com/in/kaushik-sarkar-93115728/" target="_blank" rel="noopener noreferrer" class="action-btn action-btn-ghost" title="LinkedIn Profile">
@@ -1705,6 +1727,7 @@
             <a href="javascript:window.print()">Print / PDF</a>
             <a href="mailto:Kaushik.sarkar@me.com">Contact</a>
             <a href="https://www.linkedin.com/in/kaushik-sarkar-93115728/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            <a href="https://promptgrabber.com" target="_blank" rel="noopener">PromptGrabber.com</a>
           </div>
         </footer>
 
