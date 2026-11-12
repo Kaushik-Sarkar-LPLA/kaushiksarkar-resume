@@ -10,42 +10,42 @@
   <meta property="og:description" content="Enterprise Software Development Leader & Architect. Cloud, AI & Agentic Systems, Distributed Architecture, .NET 8, Angular, AWS, Kafka.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://kaushiksarkar.com">
-  <meta name="theme-color" content="#0b1120">
+  <meta name="theme-color" content="#ffffff">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230b1120'/%3E%3Ctext x='50' y='65' font-family='sans-serif' font-size='44' font-weight='800' fill='%23c4956a' text-anchor='middle'%3EKS%3C/text%3E%3C/svg%3E">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23000000'/%3E%3Ctext x='50' y='65' font-family='sans-serif' font-size='44' font-weight='800' fill='%23ffffff' text-anchor='middle'%3EKS%3C/text%3E%3C/svg%3E">
 
   <!-- Google Fonts: Outfit (Executive Headlines & Titles), Plus Jakarta Sans (Modern Body), JetBrains Mono (Tech/Data) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-heading: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
 
-      --bg-canvas: #f1f4f8;
+      --bg-canvas: #ffffff;
       --card-bg: #ffffff;
-      --ink-primary: #0a0f1d;
-      --ink-secondary: #27364b;
-      --ink-muted: #596a82;
+      --ink-primary: #212121;
+      --ink-secondary: #333740;
+      --ink-muted: #6b7180;
       --ink-light: #94a3b8;
       
-      --accent: #c4956a;
-      --accent-dark: #8c5d35;
-      --accent-light: #fdf6ee;
-      --accent-glow: rgba(196, 149, 106, 0.25);
+      --accent: #3333ff;
+      --accent-dark: #1f1fcc;
+      --accent-light: #eef0ff;
+      --accent-glow: rgba(51, 51, 255, 0.22);
       
-      --sidebar-bg: #0b1120;
-      --sidebar-card: #131d33;
-      --sidebar-border: #1e293b;
-      --sidebar-text: #f8fafc;
-      --sidebar-muted: #94a3b8;
-      --sidebar-accent: #e2b17a;
+      --sidebar-bg: #fafafa;
+      --sidebar-card: #ffffff;
+      --sidebar-border: #e5e7eb;
+      --sidebar-text: #212121;
+      --sidebar-muted: #535966;
+      --sidebar-accent: #3333ff;
       
-      --border-light: #e2e8f0;
+      --border-light: #e5e7eb;
       --border-subtle: #f1f5f9;
       
       --pill-bg: #f8fafc;
@@ -53,8 +53,8 @@
       --pill-text: #334155;
 
       --radius-sm: 6px;
-      --radius-md: 10px;
-      --radius-lg: 16px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
       --radius-full: 9999px;
       
       --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
@@ -86,12 +86,12 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(11, 17, 32, 0.94);
+      background: rgba(255, 255, 255, 0.85);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.048);
       padding: 10px 20px;
-      color: #fff;
+      color: #000;
     }
 
     .action-bar-inner {
@@ -109,7 +109,7 @@
       align-items: center;
       gap: 12px;
       text-decoration: none;
-      color: #fff;
+      color: #000;
     }
 
     .brand-logo {
@@ -117,7 +117,7 @@
       height: 34px;
       border-radius: 8px;
       background: linear-gradient(135deg, var(--sidebar-accent) 0%, var(--accent-dark) 100%);
-      color: #0b1120;
+      color: #ffffff;
       font-family: var(--font-heading);
       font-weight: 800;
       font-size: 15px;
@@ -189,26 +189,26 @@
 
     .action-btn-primary {
       background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
-      color: #0b1120;
+      color: #ffffff;
       box-shadow: 0 2px 10px var(--accent-glow);
     }
 
     .action-btn-primary:hover {
       transform: translateY(-1px);
-      box-shadow: 0 4px 14px rgba(196, 149, 106, 0.45);
-      color: #000;
+      box-shadow: 0 4px 14px rgba(51, 51, 255, 0.45);
+      color: #fff;
     }
 
     .action-btn-ghost {
-      background: rgba(255, 255, 255, 0.08);
-      color: #e2e8f0;
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(0, 0, 0, 0.048);
+      color: #212121;
+      border: 1px solid rgba(0, 0, 0, 0.072);
     }
 
     .action-btn-ghost:hover {
-      background: rgba(255, 255, 255, 0.16);
-      color: #fff;
-      border-color: rgba(255, 255, 255, 0.25);
+      background: rgba(0, 0, 0, 0.096);
+      color: #000;
+      border-color: rgba(0, 0, 0, 0.150);
     }
 
     .btn-icon {
@@ -260,7 +260,7 @@
       width: 260px;
       height: 260px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(196, 149, 106, 0.15) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(51, 51, 255, 0.15) 0%, transparent 70%);
       pointer-events: none;
     }
 
@@ -287,7 +287,7 @@
       position: absolute;
       inset: -6px;
       border-radius: 50%;
-      border: 1px solid rgba(196, 149, 106, 0.35);
+      border: 1px solid rgba(51, 51, 255, 0.35);
     }
 
     .avatar-img {
@@ -390,8 +390,8 @@
     }
 
     .metric-card {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(0, 0, 0, 0.024);
+      border: 1px solid rgba(0, 0, 0, 0.048);
       border-radius: var(--radius-sm);
       padding: 10px 12px;
       text-align: center;
@@ -458,24 +458,24 @@
       font-weight: 500;
       padding: 3.5px 8.5px;
       border-radius: 4px;
-      background: rgba(226, 177, 122, 0.12);
-      border: 1px solid rgba(226, 177, 122, 0.25);
+      background: rgba(51, 51, 255, 0.12);
+      border: 1px solid rgba(51, 51, 255, 0.25);
       color: #e2e8f0;
       letter-spacing: 0.2px;
       transition: all 0.15s ease;
     }
 
     .skill-tag:hover {
-      background: rgba(226, 177, 122, 0.22);
+      background: rgba(51, 51, 255, 0.22);
       border-color: var(--sidebar-accent);
-      color: #fff;
+      color: #000;
     }
 
     /* Education */
     .edu-item {
       margin-bottom: 14px;
       padding-bottom: 12px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.030);
     }
 
     .edu-item:last-child {
@@ -510,8 +510,8 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(0, 0, 0, 0.024);
+      border: 1px solid rgba(0, 0, 0, 0.048);
       border-radius: var(--radius-sm);
       padding: 10px 12px;
     }
@@ -535,7 +535,7 @@
     .award-item {
       margin-bottom: 12px;
       padding-left: 10px;
-      border-left: 2px solid rgba(226, 177, 122, 0.35);
+      border-left: 2px solid rgba(51, 51, 255, 0.35);
     }
 
     .award-item:last-child {
@@ -574,7 +574,7 @@
       right: 0;
       width: 90px;
       height: 90px;
-      background: linear-gradient(135deg, transparent 60%, rgba(196, 149, 106, 0.08) 60%);
+      background: linear-gradient(135deg, transparent 60%, rgba(51, 51, 255, 0.08) 60%);
       pointer-events: none;
     }
 
@@ -623,8 +623,8 @@
       display: inline-flex;
       align-items: center;
       padding: 3px 10px;
-      background: rgba(196, 149, 106, 0.12);
-      border: 1px solid rgba(196, 149, 106, 0.3);
+      background: rgba(51, 51, 255, 0.12);
+      border: 1px solid rgba(51, 51, 255, 0.3);
       color: var(--accent-dark);
       border-radius: var(--radius-full);
       font-size: 10.5px;
@@ -750,7 +750,7 @@
       border-radius: 50%;
       background: #ffffff;
       border: 2px solid var(--accent);
-      box-shadow: 0 0 0 3px rgba(196, 149, 106, 0.2);
+      box-shadow: 0 0 0 3px rgba(51, 51, 255, 0.2);
     }
 
     .job.current-role::before {
@@ -867,7 +867,7 @@
       font-size: 12.5px;
       font-weight: 500;
       box-shadow: 0 10px 25px rgba(0,0,0,0.25);
-      border: 1px solid rgba(255,255,255,0.1);
+      border: 1px solid rgba(0, 0, 0, 0.060);
       display: flex;
       align-items: center;
       gap: 8px;
@@ -1144,7 +1144,7 @@
       }
       .sidebar {
         order: initial !important;
-        background: #0b1120 !important;
+        background: #fafafa !important;
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
         padding: 24px 16px !important;
@@ -1256,11 +1256,11 @@
           737 259 9448
         </a>
 
-        <a href="https://github.com/Kaushik-Sarkar-LPLA" target="_blank" rel="noopener noreferrer" class="action-btn action-btn-ghost" title="GitHub Profile">
+        <a href="https://www.linkedin.com/in/kaushik-sarkar-93115728/" target="_blank" rel="noopener noreferrer" class="action-btn action-btn-ghost" title="LinkedIn Profile">
           <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor">
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"></path>
+            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 1 1 0-4.124 2.062 2.062 0 0 1 0 4.124zM7.119 20.452H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"></path>
           </svg>
-          GitHub
+          LinkedIn
         </a>
       </div>
     </div>
@@ -1306,11 +1306,11 @@
               </svg>
               <span>Austin, TX, USA</span>
             </div>
-            <a href="https://github.com/Kaushik-Sarkar-LPLA" target="_blank" rel="noopener noreferrer" class="contact-item">
+            <a href="https://www.linkedin.com/in/kaushik-sarkar-93115728/" target="_blank" rel="noopener noreferrer" class="contact-item">
               <svg class="contact-icon" viewBox="0 0 24 24" fill="currentColor">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"></path>
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 1 1 0-4.124 2.062 2.062 0 0 1 0 4.124zM7.119 20.452H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"></path>
               </svg>
-              <span>github.com/Kaushik-Sarkar-LPLA</span>
+              <span>linkedin.com/in/kaushik-sarkar</span>
             </a>
           </div>
         </div>
@@ -1710,7 +1710,7 @@
           <div class="footer-links">
             <a href="javascript:window.print()">Print / PDF</a>
             <a href="mailto:Kaushik.sarkar@me.com">Contact</a>
-            <a href="https://github.com/Kaushik-Sarkar-LPLA" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <a href="https://www.linkedin.com/in/kaushik-sarkar-93115728/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
           </div>
         </footer>
 
