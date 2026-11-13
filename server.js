@@ -181,7 +181,6 @@ const SUBNAV_CSS = `.bar,.action-bar{background:#fff!important;backdrop-filter:n
 }
 .sn-tog{display:none}
 @media(max-width:700px){.sn-tog{display:flex}}
-}
 .sn-search{position:relative;width:240px;flex-shrink:0}
 .sn-search>svg{position:absolute;left:11px;top:50%;width:15px;height:15px;transform:translateY(-50%);color:#94a3b8;pointer-events:none}
 .sn-search input{width:100%;height:34px;padding:0 12px 0 33px;border:1px solid #e2e8f0;border-radius:999px;background:#f8fafc;font:14px Inter,-apple-system,sans-serif;color:#0f172a;outline:none;transition:all .15s}
