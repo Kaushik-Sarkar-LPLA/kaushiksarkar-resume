@@ -126,11 +126,11 @@ footer.site a:hover{color:var(--accent-dark)}
 .cp-btn{position:absolute;top:10px;right:10px;display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 12px;border-radius:8px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.1);color:#e2e8f0;font:600 12px Inter,-apple-system,sans-serif;cursor:pointer;backdrop-filter:blur(6px);transition:all .15s;z-index:2}
 .cp-btn:hover{background:#35609f;border-color:#35609f;color:#fff}
 .cp-btn.ok{background:#16a34a;border-color:#16a34a;color:#fff}
-.cp-btn svg{width:14px;height:14px}
+.cp-btn svg,.cp-main svg{width:14px;height:14px;flex-shrink:0}
 .content pre{padding-top:48px!important}
 .content .blog-prompt pre{padding:0!important;margin-top:14px!important}
 .bp-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.bp-head h2{margin:0!important}
-.cp-main{display:inline-flex;align-items:center;gap:8px;margin:0;height:34px;padding:0 16px;border-radius:10px;border:0;background:linear-gradient(135deg,#6b9be0,#35609f);color:#fff;font:700 13px Inter,-apple-system,sans-serif;cursor:pointer;box-shadow:0 3px 12px rgba(53,96,159,.3)}
+.cp-main{display:inline-flex;align-items:center;gap:7px;margin:0;height:32px;font-size:12px!important;padding:0 16px;border-radius:10px;border:0;background:linear-gradient(135deg,#6b9be0,#35609f);color:#fff;font:700 13px Inter,-apple-system,sans-serif;cursor:pointer;box-shadow:0 3px 12px rgba(53,96,159,.3)}
 .cp-main.ok{background:#16a34a}
 `;
 
@@ -145,8 +145,7 @@ async function refreshCats() { try { const d = await api('?page=1&limit=1'); if 
 const SEARCH_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>';
 function subnav(active = '', q = '', home = false) {
   const items = [`<a href="/" class="sn-l${home && !active && !q ? ' on' : ''}">All</a>`].concat(CATS.map(c => `<a href="/category/${slugify(c.category)}" class="sn-l${c.category === active ? ' on' : ''}">${esc(c.category.replace(/ Prompts$/, ''))}<span class="sn-c">${c.count}</span></a>`));
-  items.push(`<a href="/resume" class="sn-l sn-res${active === '__resume' ? ' on' : ''}">Resume</a>`);
-  return `<div class="subnav"><div class="sn-in"><nav class="sn-cats" aria-label="Categories">${items.join('')}</nav><form class="sn-search" action="/search" method="get" role="search">${SEARCH_ICON}<input type="search" name="q" value="${esc(q)}" placeholder="Search articles…" aria-label="Search articles"></form></div></div>`;
+    return `<div class="subnav"><div class="sn-in"><nav class="sn-cats" aria-label="Categories">${items.join('')}</nav><form class="sn-search" action="/search" method="get" role="search"><button type="button" class="sn-sbtn" aria-label="Open search" onclick="var f=this.form;f.classList.add('open');f.querySelector('input').focus()">${SEARCH_ICON}</button>${SEARCH_ICON}<input onblur="if(!this.value)this.form.classList.remove('open')" type="search" name="q" value="${esc(q)}" placeholder="Search articles…" aria-label="Search articles"></form></div></div>`;
 }
 const SUBNAV_CSS = `.bar,.action-bar{background:#fff!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}.subnav{position:sticky;top:var(--bar-h,57px);z-index:99;background:#fff;margin-top:-1px;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid #e2e8f0}
 .sn-in{max-width:1140px;margin:0 auto;padding:0 20px;display:flex;align-items:center;gap:16px;height:50px}
@@ -156,12 +155,26 @@ const SUBNAV_CSS = `.bar,.action-bar{background:#fff!important;backdrop-filter:n
 .sn-l:hover{color:#35609f;background:#eef3fa}
 .sn-l.on{color:#fff;background:linear-gradient(135deg,#6b9be0,#35609f);box-shadow:0 3px 10px rgba(53,96,159,.28)}
 .sn-c{margin-left:7px;font-size:10px;font-weight:700;padding:1px 6px;border-radius:999px;background:rgba(100,116,139,.12);color:inherit;letter-spacing:0}.sn-l.on .sn-c{background:rgba(255,255,255,.25)}
-.sn-res{margin-left:auto;border-color:#d5e2f4!important}
+.sn-sbtn{display:none}
+.sn-cats{-webkit-mask-image:linear-gradient(90deg,#000 92%,transparent);mask-image:linear-gradient(90deg,#000 92%,transparent);padding-right:24px}
+@media(max-width:700px){
+.sn-in{flex-wrap:nowrap!important;height:48px!important;padding:0 12px!important;gap:6px!important;position:relative}
+.sn-cats{height:48px!important;order:0}
+.sn-l{height:30px;padding:0 11px;font-size:10.5px}.sn-c{display:none}
+.sn-search{width:auto!important;order:1!important;position:static!important}
+.sn-search>svg,.sn-search input{display:none}
+.sn-sbtn{display:grid;place-items:center;width:34px;height:34px;border-radius:999px;border:1px solid #e2e8f0;background:#f8fafc;color:#475569;cursor:pointer;flex-shrink:0}
+.sn-sbtn svg{position:static!important;transform:none!important;width:16px;height:16px}
+.sn-search.open{position:absolute!important;inset:0;background:#fff;display:flex;align-items:center;padding:0 12px;z-index:5}
+.sn-search.open .sn-sbtn{display:none}
+.sn-search.open>svg{display:block;left:24px}
+.sn-search.open input{display:block;height:36px}
+}
 .sn-search{position:relative;width:240px;flex-shrink:0}
 .sn-search svg{position:absolute;left:11px;top:50%;width:15px;height:15px;transform:translateY(-50%);color:#94a3b8;pointer-events:none}
 .sn-search input{width:100%;height:34px;padding:0 12px 0 33px;border:1px solid #e2e8f0;border-radius:999px;background:#f8fafc;font:14px Inter,-apple-system,sans-serif;color:#0f172a;outline:none;transition:all .15s}
 .sn-search input:focus{background:#fff;border-color:#6b9be0;box-shadow:0 0 0 3px rgba(74,123,200,.18)}
-@media(max-width:700px){.bar,.action-bar{position:relative!important}.sn-in{flex-wrap:wrap;height:auto;padding:8px 14px;gap:8px}.sn-search{width:100%;order:-1}.sn-cats{height:36px}}`;
+@media(max-width:700px){.bar,.action-bar{position:relative!important}}`;
 
 function layout({ title, desc, canonical, active, body, image, jsonld, robots, cat = '', q = '' }) {
   return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
