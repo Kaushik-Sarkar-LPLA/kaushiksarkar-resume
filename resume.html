@@ -19,7 +19,7 @@
   <!-- Google Fonts: Outfit (Executive Headlines & Titles), Plus Jakarta Sans (Modern Body), JetBrains Mono (Tech/Data) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;800&family=Caveat:wght@700&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab+Highlight:wght@700&family=Montserrat:wght@300;800&family=Caveat:wght@700&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
     :root {
@@ -1248,7 +1248,8 @@
         print-color-adjust: exact !important;
       }
     }
-  </style>
+  .tw{font-family:'Zilla Slab Highlight',serif;font-weight:700;font-size:22px;letter-spacing:.04em;color:#1f2a3d;white-space:nowrap;display:inline-flex;align-items:center}.tw::after{content:'';display:inline-block;width:2px;height:1.05em;margin-left:3px;background:currentColor;animation:twb 1s steps(1) infinite}@keyframes twb{50%{opacity:0}}.icon-btn{display:inline-grid;place-items:center;width:36px;height:36px;padding:0!important;border-radius:8px}.icon-btn svg{width:17px;height:17px}@media(max-width:640px){.tw{font-size:17px}}
+</style>
 </head>
 <body>
 
@@ -1260,13 +1261,13 @@
       <a href="/" class="action-bar-brand">
         <div class="brand-logo" aria-label="Kaushik Sarkar logo"><svg viewBox="0 0 40 40" width="34" height="34" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="ksg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6b9be0"/><stop offset="1" stop-color="#35609f"/></linearGradient></defs><rect width="40" height="40" rx="10" fill="url(#ksg)"/><g transform="translate(8 8)" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/><path d="M16 8 2 22"/><path d="M17.5 15H9"/></g></svg></div>
         <div class="brand-info">
-          <span class="brand-name"><span class="bn-main"><b>Kaushik</b><i>Sarkar</i></span><span class="bn-blog">Blogs</span></span>
+          <span class="brand-name"><span class="tw" data-text="KAUSHIK SARKAR" aria-label="Kaushik Sarkar">KAUSHIK SARKAR</span><span class="bn-blog">Blogs</span></span>
           </div>
       </a>
 
       <div class="action-buttons">
         <a href="/" class="action-btn action-btn-ghost">Blogs</a>
-        <a href="/resume" class="action-btn action-btn-primary" aria-current="page">Resume</a>
+        <a href="/resume" class="action-btn action-btn-primary icon-btn" aria-current="page" title="Resume" aria-label="Resume"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8M16 17H8M10 9H8"/></svg></a>
         <button onclick="window.print()" class="action-btn action-btn-ghost" title="Print or Save Resume as PDF">
           <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <polyline points="6 9 6 2 18 2 18 9"></polyline>
@@ -1276,7 +1277,7 @@
           Print / PDF
         </button>
 
-        <a href="mailto:Kaushik.sarkar@me.com" class="action-btn email-btn">
+        <a href="mailto:Kaushik.sarkar@me.com" class="action-btn action-btn-ghost">
           <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <rect x="2" y="4" width="20" height="16" rx="2"></rect>
             <path d="M22 4l-10 8L2 4"></path>
@@ -1766,5 +1767,6 @@
     }
   </script>
 
+<script>(function(){var e=document.querySelector('.tw');if(!e)return;var t=e.dataset.text,i=0;if(matchMedia('(prefers-reduced-motion: reduce)').matches){e.textContent=t;return}e.textContent='';(function s(){e.textContent=t.slice(0,++i);if(i<t.length)setTimeout(s,110)})()})();</script>
 </body>
 </html>
