@@ -105,7 +105,7 @@ footer.site a{color:var(--muted);text-decoration:none;margin-left:14px}
 footer.site a:hover{color:var(--accent-dark)}
 .pg{display:inline-flex;align-items:center;gap:6px;font-weight:600;color:var(--accent-dark)!important}
 @media(max-width:640px){.bn-main{font-size:15px}.bn-blog{font-size:22px}article header h1{font-size:26px}.grid{grid-template-columns:1fr}}
-.tw{font-family:'Zilla Slab Highlight',serif;font-weight:700;font-size:48px;line-height:34px;height:34px;letter-spacing:.03em;color:#35609f;white-space:nowrap;display:inline-flex;align-items:center}.tw::after{content:'';display:inline-block;width:.5em;height:34px;margin-left:4px;border-radius:3px;background:#991b1b;animation:twb 1s steps(1) infinite}@keyframes twb{50%{opacity:0}}.icon-btn{display:inline-grid;place-items:center;width:36px;height:36px;padding:0!important;border-radius:8px}.icon-btn svg{width:17px;height:17px}@media(max-width:640px){.tw{font-size:34px;line-height:26px;height:26px}.tw::after{height:26px}}
+.tw{font-family:'Special Elite',monospace;font-weight:400;white-space:pre;font-size:48px;line-height:34px;height:34px;letter-spacing:.03em;color:#35609f;white-space:nowrap;display:inline-flex;align-items:center}.tw::after{content:'';display:inline-block;width:.5em;height:34px;margin-left:4px;border-radius:3px;background:#991b1b;animation:twb 1s steps(1) infinite}@keyframes twb{50%{opacity:0}}.icon-btn{display:inline-grid;place-items:center;width:36px;height:36px;padding:0!important;border-radius:8px}.icon-btn svg{width:17px;height:17px}@media(max-width:640px){.tw{font-size:34px;line-height:26px;height:26px}.tw::after{height:26px}}
 `;
 
 const LOGO = (RESUME.match(/<div class="brand-logo"[^>]*>(<svg[\s\S]*?<\/svg>)<\/div>/) || [, ''])[1];
@@ -120,13 +120,13 @@ ${image ? `<meta property="og:image" content="${esc(image)}"><meta name="twitter
 <link rel="alternate" type="application/rss+xml" title="Kaushik Sarkar Blogs" href="${SITE}/rss.xml">
 ${FAVICON}<meta name="theme-color" content="#ffffff">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab+Highlight:wght@700&family=Montserrat:wght@300;800&family=Caveat:wght@700&family=Inter:wght@400;600;700;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Montserrat:wght@300;800&family=Caveat:wght@700&family=Inter:wght@400;600;700;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
 <style>${CSS}</style>${jsonld ? `<script type="application/ld+json">${JSON.stringify(jsonld).replace(/</g, '\\u003c')}</script>` : ''}</head><body>
 <header class="bar"><div class="bar-in"><a href="/" class="brand" aria-label="Kaushik Sarkar Blogs home"><div class="logo">${LOGO}</div><span class="bn"><span class="tw" data-text="KAUSHIK SARKAR" aria-label="Kaushik Sarkar">KAUSHIK SARKAR</span><span class="bn-blog">Blogs</span></span></a>
 <nav class="nav"><a href="/" class="btn ${active === 'blog' ? 'on' : ''}">Blogs</a><a href="/resume" class="btn icon-btn ${active === 'resume' ? 'on' : ''}" title="Resume" aria-label="Resume"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8M16 17H8M10 9H8"/></svg></a></nav></div></header>
 <main>${body}</main>
 <footer class="site"><div class="in"><span>© ${new Date().getFullYear()} Kaushik Sarkar · kaushiksarkar.com</span><span><a href="/">Blogs</a><a href="/resume">Resume</a><a href="https://www.linkedin.com/in/kaushik-sarkar-93115728/" rel="noopener" target="_blank">LinkedIn</a><a class="pg" href="https://promptgrabber.com" target="_blank" rel="noopener">More AI prompts at PromptGrabber.com →</a></span></div></footer>
-<script>(function(){var e=document.querySelector('.tw');if(!e)return;var t=e.dataset.text,i=0,C=['#6b9be0','#5f8fd5','#5584ca','#4a78bf','#406cb3','#35609f'];function r(n){var k=0;e.innerHTML=t.slice(0,n).split('').map(function(c){return c===' '?' ':'<span style="color:'+C[k++%C.length]+'">'+c+'</span>'}).join('')}if(matchMedia('(prefers-reduced-motion: reduce)').matches){r(t.length);return}r(0);(function s(){r(++i);if(i<t.length)setTimeout(s,110)})()})();</script>
+<script>(function(){var e=document.querySelector('.tw');if(!e)return;var t=e.dataset.text,i=0,C=['#6b9be0','#5f8fd5','#5584ca','#4a78bf','#406cb3','#35609f'];function r(n){var k=0;e.innerHTML=t.slice(0,n).split('').map(function(c){return c===' '?'<span style="display:inline-block;width:.45em"></span>':'<span style="color:'+C[k++%C.length]+'">'+c+'</span>'}).join('')}if(matchMedia('(prefers-reduced-motion: reduce)').matches){r(t.length);return}r(0);(function s(){r(++i);if(i<t.length)setTimeout(s,110)})()})();</script>
 </body></html>`;
 }
 
