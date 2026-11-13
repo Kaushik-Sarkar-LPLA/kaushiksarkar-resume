@@ -1248,7 +1248,7 @@
         print-color-adjust: exact !important;
       }
     }
-  .tw{font-family:'Zilla Slab Highlight',serif;font-weight:700;font-size:22px;letter-spacing:.02em;color:#1f2a3d;white-space:nowrap;display:inline-flex;align-items:center}.tw::after{content:'';display:inline-block;width:.55em;height:1.05em;margin-left:3px;border-radius:2px;background:rgba(0,0,0,.28);animation:twb 1s steps(1) infinite}@keyframes twb{50%{opacity:0}}.icon-btn{display:inline-grid;place-items:center;width:36px;height:36px;padding:0!important;border-radius:8px}.icon-btn svg{width:17px;height:17px}@media(max-width:640px){.tw{font-size:17px}}
+  .tw{font-family:'Zilla Slab Highlight',serif;font-weight:700;font-size:22px;letter-spacing:.02em;color:#1f2a3d;white-space:nowrap;display:inline-flex;align-items:center}.tw::after{content:'';display:inline-block;width:.55em;height:1.05em;margin-left:3px;border-radius:2px;background:rgba(0,0,0,.55);animation:twb 1s steps(1) infinite}@keyframes twb{50%{opacity:0}}.icon-btn{display:inline-grid;place-items:center;width:36px;height:36px;padding:0!important;border-radius:8px}.icon-btn svg{width:17px;height:17px}@media(max-width:640px){.tw{font-size:17px}}
 </style>
 </head>
 <body>
@@ -1767,6 +1767,6 @@
     }
   </script>
 
-<script>(function(){var e=document.querySelector('.tw');if(!e)return;var t=e.dataset.text,i=0;if(matchMedia('(prefers-reduced-motion: reduce)').matches){var C=['#e11d48','#f97316','#eab308','#16a34a','#0891b2','#2563eb','#7c3aed','#db2777'],k=0,h=function(n){return t.slice(0,n).split('').map(function(c){return c===' '?' ':'<span style="color:'+C[k++%C.length]+'">'+c+'</span>'}).join('')};function r(n){k=0;e.innerHTML=h(n)}if(matchMedia('(prefers-reduced-motion: reduce)').matches){r(t.length);return}r(0);(function s(){r(++i);if(i<t.length)setTimeout(s,110)})()})();</script>
+<script>(function(){var e=document.querySelector('.tw');if(!e)return;var t=e.dataset.text,i=0,C=['#e11d48','#f97316','#eab308','#16a34a','#0891b2','#2563eb','#7c3aed','#db2777'];function r(n){var k=0;e.innerHTML=t.slice(0,n).split('').map(function(c){return c===' '?' ':'<span style="color:'+C[k++%C.length]+'">'+c+'</span>'}).join('')}if(matchMedia('(prefers-reduced-motion: reduce)').matches){r(t.length);return}r(0);(function s(){r(++i);if(i<t.length)setTimeout(s,110)})()})();</script>
 </body>
 </html>
