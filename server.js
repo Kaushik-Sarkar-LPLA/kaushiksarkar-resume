@@ -145,7 +145,8 @@ async function refreshCats() { try { const d = await api('?page=1&limit=1'); if 
 const SEARCH_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>';
 function subnav(active = '', q = '', home = false) {
   const items = [`<a href="/" class="sn-l${home && !active && !q ? ' on' : ''}">All</a>`].concat(CATS.map(c => `<a href="/category/${slugify(c.category)}" class="sn-l${c.category === active ? ' on' : ''}">${esc(c.category.replace(/ Prompts$/, ''))}<span class="sn-c">${c.count}</span></a>`));
-    return `<div class="subnav"><div class="sn-in"><nav class="sn-cats" aria-label="Categories">${items.join('')}</nav><form class="sn-search" action="/search" method="get" role="search"><button type="button" class="sn-sbtn" aria-label="Open search" onclick="var f=this.form;f.classList.add('open');f.querySelector('input').focus()">${SEARCH_ICON}</button>${SEARCH_ICON}<input onblur="if(!this.value)this.form.classList.remove('open')" type="search" name="q" value="${esc(q)}" placeholder="Search articles…" aria-label="Search articles"></form></div></div>`;
+    const curName = q ? 'Search results' : active === '__resume' ? 'Blog categories' : active ? active.replace(/ Prompts$/, '') : 'All articles';
+  return `<div class="subnav"><div class="sn-in"><button type="button" class="sn-tog" aria-expanded="false" aria-controls="sn-cats" onclick="var n=this.closest('.subnav'),o=n.classList.toggle('open');this.setAttribute('aria-expanded',o)"><svg class="sn-hb" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg><span>${esc(curName)}</span><svg class="sn-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg></button><nav class="sn-cats" id="sn-cats" aria-label="Categories">${items.join('')}</nav><form class="sn-search" action="/search" method="get" role="search"><button type="button" class="sn-sbtn" aria-label="Open search" onclick="var f=this.form;f.classList.add('open');f.querySelector('input').focus()">${SEARCH_ICON}</button>${SEARCH_ICON}<input onblur="if(!this.value)this.form.classList.remove('open')" type="search" name="q" value="${esc(q)}" placeholder="Search articles…" aria-label="Search articles"></form></div></div>`;
 }
 const SUBNAV_CSS = `.bar,.action-bar{background:#fff!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}.subnav{position:sticky;top:var(--bar-h,57px);z-index:99;background:#fff;margin-top:-1px;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid #e2e8f0}
 .sn-in{max-width:1140px;margin:0 auto;padding:0 20px;display:flex;align-items:center;gap:16px;height:50px}
@@ -158,17 +159,28 @@ const SUBNAV_CSS = `.bar,.action-bar{background:#fff!important;backdrop-filter:n
 .sn-sbtn{display:none}
 .sn-cats{-webkit-mask-image:linear-gradient(90deg,#000 92%,transparent);mask-image:linear-gradient(90deg,#000 92%,transparent);padding-right:24px}
 @media(max-width:700px){
-.sn-in{flex-wrap:nowrap!important;height:48px!important;padding:0 12px!important;gap:6px!important;position:relative}
-.sn-cats{height:48px!important;order:0}
-.sn-l{height:30px;padding:0 11px;font-size:10.5px}.sn-c{display:none}
+.sn-in{flex-wrap:wrap!important;height:auto!important;padding:7px 12px!important;gap:8px!important;position:relative}
+.sn-tog{flex:1;display:flex;align-items:center;gap:10px;height:38px;padding:0 14px;border:1px solid #e2e8f0;border-radius:10px;background:#f8fafc;font:700 11.5px Inter,-apple-system,sans-serif;letter-spacing:.09em;text-transform:uppercase;color:#35609f;cursor:pointer;text-align:left}
+.sn-tog span{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sn-tog svg{width:17px;height:17px;flex-shrink:0}.sn-hb{color:#64748b}
+.sn-chev{color:#64748b;transition:transform .25s}
+.subnav.open .sn-chev{transform:rotate(180deg)}
+.subnav.open .sn-tog{border-color:#6b9be0;background:#fff}
+.sn-cats{order:3;flex:0 0 100%!important;width:100%;display:flex!important;flex-direction:column;align-items:stretch!important;gap:2px!important;height:auto!important;max-height:0;overflow:hidden!important;padding:0!important;-webkit-mask-image:none!important;mask-image:none!important;transition:max-height .3s ease,padding .3s ease}
+.subnav.open .sn-cats{max-height:70vh;overflow-y:auto!important;padding:4px 0 6px!important}
+.sn-l{width:100%;height:42px!important;padding:0 14px!important;border-radius:10px!important;font-size:12px!important;justify-content:space-between;flex-shrink:0}
+.sn-c{display:inline-block!important}
 .sn-search{width:auto!important;order:1!important;position:static!important}
 .sn-search>svg,.sn-search input{display:none}
-.sn-sbtn{display:grid;place-items:center;width:34px;height:34px;border-radius:999px;border:1px solid #e2e8f0;background:#f8fafc;color:#475569;cursor:pointer;flex-shrink:0}
+.sn-sbtn{display:grid;place-items:center;width:38px;height:38px;border-radius:10px;border:1px solid #e2e8f0;background:#f8fafc;color:#475569;cursor:pointer;flex-shrink:0}
 .sn-sbtn svg{position:static!important;transform:none!important;width:16px;height:16px}
-.sn-search.open{position:absolute!important;inset:0;background:#fff;display:flex;align-items:center;padding:0 12px;z-index:5}
+.sn-search.open{position:absolute!important;left:0;right:0;top:0;height:52px;background:#fff;display:flex;align-items:center;padding:0 12px;z-index:5}
 .sn-search.open .sn-sbtn{display:none}
 .sn-search.open>svg{display:block;left:24px}
-.sn-search.open input{display:block;height:36px}
+.sn-search.open input{display:block;height:38px}
+}
+.sn-tog{display:none}
+@media(max-width:700px){.sn-tog{display:flex}}
 }
 .sn-search{position:relative;width:240px;flex-shrink:0}
 .sn-search svg{position:absolute;left:11px;top:50%;width:15px;height:15px;transform:translateY(-50%);color:#94a3b8;pointer-events:none}
