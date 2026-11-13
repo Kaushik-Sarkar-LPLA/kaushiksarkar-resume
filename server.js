@@ -133,7 +133,7 @@ function subnav(active = '', q = '', home = false) {
   const items = [`<a href="/" class="sn-l${home && !active && !q ? ' on' : ''}">All</a>`].concat(CATS.map(c => `<a href="/category/${slugify(c.category)}" class="sn-l${c.category === active ? ' on' : ''}">${esc(c.category.replace(/ Prompts$/, ''))}</a>`));
   return `<div class="subnav"><div class="sn-in"><nav class="sn-cats" aria-label="Categories">${items.join('')}</nav><form class="sn-search" action="/search" method="get" role="search">${SEARCH_ICON}<input type="search" name="q" value="${esc(q)}" placeholder="Search articles…" aria-label="Search articles"></form></div></div>`;
 }
-const SUBNAV_CSS = `.subnav{position:sticky;top:57px;z-index:99;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid #e2e8f0}
+const SUBNAV_CSS = `@media(max-width:700px){.bar,.action-bar{position:relative!important}.subnav{top:0!important}}.subnav{position:sticky;top:57px;z-index:99;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid #e2e8f0}
 .sn-in{max-width:1140px;margin:0 auto;padding:0 20px;display:flex;align-items:center;gap:16px;height:50px}
 .sn-cats{flex:1;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;height:100%;align-items:stretch}.sn-cats::-webkit-scrollbar{display:none}
 .sn-l{display:flex;align-items:center;padding:0 12px;font:600 13.5px Inter,-apple-system,sans-serif;color:#64748b;text-decoration:none;white-space:nowrap;border-bottom:2px solid transparent;transition:color .15s,border-color .15s}
