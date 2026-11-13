@@ -54,7 +54,21 @@ main{flex:1;width:100%;max-width:1140px;margin:0 auto;padding:36px 20px}
 .card h2{font-size:17px;line-height:1.35;font-weight:700}
 .card p{font-size:13.5px;color:var(--muted);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .meta{font-size:12px;color:var(--light);margin-top:auto}
-.pager{display:flex;justify-content:center;gap:10px;margin-top:36px}
+.pager{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:6px;margin-top:40px}
+.pg-n{min-width:38px;height:38px;padding:0 10px;display:inline-grid;place-items:center;border-radius:10px;border:1px solid var(--border);background:#fff;color:var(--ink2);font-size:14px;font-weight:600;text-decoration:none;transition:all .15s}
+.pg-n:hover{border-color:var(--accent);color:var(--accent-dark)}
+.pg-n.on{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-color:transparent;box-shadow:0 2px 10px var(--glow)}
+.pg-arrow{font-size:20px}.pg-gap{color:var(--light);padding:0 4px}
+.tools{display:flex;gap:10px;flex-wrap:wrap;margin:-8px 0 26px}
+.srch{flex:1;min-width:220px;position:relative}
+.srch svg{position:absolute;left:12px;top:50%;width:17px;height:17px;transform:translateY(-50%);color:var(--light)}
+.srch input,.tools select{width:100%;height:40px;border:1px solid var(--border);border-radius:10px;font:inherit;font-size:14px;color:var(--ink);background:#fff;outline:none;transition:border-color .15s,box-shadow .15s}
+.srch input{padding:0 12px 0 38px}
+.tools select{width:auto;min-width:190px;padding:0 34px 0 12px;appearance:none;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2.5'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 12px center;cursor:pointer}
+.srch input:focus,.tools select:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--glow)}
+.tools .btn{height:40px;min-height:40px}
+.empty{text-align:center;color:var(--muted);padding:50px 0}
+@media(max-width:640px){.tools select{flex:1}}
 article{max-width:780px;margin:0 auto}
 article header h1{font-size:34px;line-height:1.2;font-weight:800;letter-spacing:-.02em;margin:12px 0}
 article header .meta{margin-bottom:22px}
@@ -132,16 +146,25 @@ ${FAVICON}<meta name="theme-color" content="#ffffff">
 
 const card = p => `<a class="card" href="/blog/${esc(p.slug)}">${p.cover_image ? `<img src="${esc(p.cover_image)}" alt="${esc(p.cover_alt || p.title)}" loading="lazy" width="640" height="360">` : ''}<div class="b">${p.category ? `<span class="cat">${esc(p.category)}</span>` : ''}<h2>${esc(p.title)}</h2><p>${esc(p.excerpt)}</p><span class="meta">${fmtDate(p.published_at)} · ${p.reading_minutes || 5} min read</span></div></a>`;
 
-async function listPage(page) {
-  const d = await api(`?page=${page}&limit=${PER}`);
-  const canonical = page > 1 ? `${SITE}/?page=${page}` : `${SITE}/`;
-  const pager = `<nav class="pager">${page > 1 ? `<a class="btn" rel="prev" href="${page === 2 ? '/' : `/?page=${page - 1}`}">← Newer</a>` : ''}${page < d.totalPages ? `<a class="btn" rel="next" href="/?page=${page + 1}">Older →</a>` : ''}</nav>`;
+async function listPage(page, q = '', cat = '') {
+  q = q.slice(0, 80); cat = cat.slice(0, 60);
+  const qs = (pg) => { const sp = new URLSearchParams(); if (q) sp.set('q', q); if (cat) sp.set('category', cat); if (pg > 1) sp.set('page', pg); const t = sp.toString(); return t ? `/?${t}` : '/'; };
+  const d = await api(`?page=${page}&limit=${PER}${q ? `&search=${encodeURIComponent(q)}` : ''}${cat ? `&category=${encodeURIComponent(cat)}` : ''}`);
+  const tp = Math.max(1, d.totalPages || 1);
+  const filtered = !!(q || cat);
+  const canonical = filtered ? `${SITE}/` : (page > 1 ? `${SITE}/?page=${page}` : `${SITE}/`);
+  const nums = []; const win = new Set([1, tp]); for (let i = page - 2; i <= page + 2; i++) if (i >= 1 && i <= tp) win.add(i);
+  [...win].sort((x, y) => x - y).forEach((n, i, arr) => { if (i && n - arr[i - 1] > 1) nums.push('<span class="pg-gap">…</span>'); nums.push(n === page ? `<span class="pg-n on" aria-current="page">${n}</span>` : `<a class="pg-n" href="${qs(n)}">${n}</a>`); });
+  const pager = tp > 1 ? `<nav class="pager" aria-label="Pagination">${page > 1 ? `<a class="pg-n pg-arrow" rel="prev" href="${qs(page - 1)}" aria-label="Previous page">‹</a>` : ''}${nums.join('')}${page < tp ? `<a class="pg-n pg-arrow" rel="next" href="${qs(page + 1)}" aria-label="Next page">›</a>` : ''}</nav>` : '';
+  const cats = (d.categories || []).map(c => `<option value="${esc(c.category)}"${c.category === cat ? ' selected' : ''}>${esc(c.category)} (${c.count})</option>`).join('');
+  const tools = `<form class="tools" method="get" action="/" role="search"><div class="srch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input type="search" name="q" value="${esc(q)}" placeholder="Search articles…" aria-label="Search articles"></div><select name="category" aria-label="Category" onchange="this.form.submit()"><option value="">All categories</option>${cats}</select><button class="btn on" type="submit">Search</button>${filtered ? '<a class="btn" href="/">Clear</a>' : ''}</form>`;
+  const heading = filtered ? `${d.total || 0} result${d.total === 1 ? '' : 's'}${q ? ` for “${esc(q)}”` : ''}${cat ? ` in ${esc(cat)}` : ''}` : 'Latest articles';
   return layout({
-    title: page > 1 ? `Kaushik Sarkar Blogs — Page ${page}` : 'Kaushik Sarkar Blogs — AI Prompts, Tutorials & Engineering',
+    title: filtered ? `Search${q ? ': ' + q : ''}${cat ? ' — ' + cat : ''} | Kaushik Sarkar Blogs` : page > 1 ? `Kaushik Sarkar Blogs — Page ${page}` : 'Kaushik Sarkar Blogs — AI Prompts, Tutorials & Engineering',
     desc: 'Articles by Kaushik Sarkar on AI image and video prompts, generative AI tutorials, and software engineering.',
-    canonical, active: 'blog',
+    canonical, active: 'blog', robots: filtered ? 'noindex,follow' : '',
     jsonld: { '@context': 'https://schema.org', '@type': 'Blog', name: 'Kaushik Sarkar Blogs', url: SITE + '/', author: { '@type': 'Person', name: 'Kaushik Sarkar', url: SITE + '/resume' } },
-    body: `<section class="hero"><h1>Latest articles</h1><p>AI prompts, generative AI tutorials and engineering notes by Kaushik Sarkar.</p></section><div class="grid">${d.posts.map(card).join('')}</div>${pager}`,
+    body: `<section class="hero"><h1>${heading}</h1><p>AI prompts, generative AI tutorials and engineering notes by Kaushik Sarkar.</p></section>${tools}${d.posts.length ? `<div class="grid">${d.posts.map(card).join('')}</div>` : '<p class="empty">No articles found. Try a different search or category.</p>'}${pager}`,
   });
 }
 
@@ -193,7 +216,7 @@ http.createServer(async (req, res) => {
   const u = new URL(req.url, SITE);
   const p = u.pathname.replace(/\/+$/, '') || '/';
   try {
-    if (p === '/') return send(res, 200, 'text/html; charset=utf-8', await listPage(Math.max(1, parseInt(u.searchParams.get('page')) || 1)));
+    if (p === '/') return send(res, 200, 'text/html; charset=utf-8', await listPage(Math.max(1, parseInt(u.searchParams.get('page')) || 1), (u.searchParams.get('q') || '').trim(), (u.searchParams.get('category') || '').trim()));
     if (p === '/resume' || p === '/resume.html') return send(res, 200, 'text/html; charset=utf-8', RESUME, 3600);
     if (p === '/index.html' || p === '/blog' || p === '/blogs') { res.writeHead(301, { Location: '/' }); return res.end(); }
     let m = p.match(/^\/blog\/([a-z0-9-]+)$/i);
