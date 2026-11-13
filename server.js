@@ -69,8 +69,8 @@ main{flex:1;width:100%;max-width:1140px;margin:0 auto;padding:36px 20px}
 .tools .btn{height:40px;min-height:40px}
 .empty{text-align:center;color:var(--muted);padding:50px 0}
 @media(max-width:640px){.tools select{flex:1}}
-article{max-width:780px;margin:0 auto}
-article header h1{font-size:34px;line-height:1.2;font-weight:800;letter-spacing:-.02em;margin:12px 0}
+article{max-width:none;width:100%;margin:0 auto}
+article header h1{font-size:clamp(26px,4vw,42px);line-height:1.2;font-weight:800;letter-spacing:-.02em;margin:12px 0}
 article header .meta{margin-bottom:22px}
 .cover{width:100%;border-radius:12px;margin-bottom:26px}
 .content{font-size:16px;line-height:1.75;color:#334155;overflow-wrap:break-word}
@@ -120,8 +120,17 @@ footer.site a:hover{color:var(--accent-dark)}
 .pg{display:inline-flex;align-items:center;gap:6px;font-weight:600;color:var(--accent-dark)!important}
 @media(max-width:640px){.bn-main{font-size:15px}.bn-blog{font-size:22px}article header h1{font-size:26px}.grid{grid-template-columns:1fr}}
 .tw{font-family:'Special Elite',monospace;font-weight:400;white-space:pre;font-size:30px;line-height:1;height:34px;align-self:center;letter-spacing:.03em;color:#35609f;white-space:nowrap;display:inline-flex;align-items:center}.tw::after{content:'';display:inline-block;width:.5em;height:.71em;margin-left:4px;border-radius:2px;background:#35609f;animation:twb 1s steps(1) infinite}@keyframes twb{50%{opacity:0}}.tw>span{position:relative;top:.15em}.bn,.brand-name,.brand,.action-bar-brand{align-items:center!important}.icon-btn{display:inline-grid;place-items:center;width:36px;height:36px;padding:0!important;border-radius:8px}.icon-btn svg{width:17px;height:17px}@media(max-width:640px){.tw{font-size:22px;height:26px}}
+.cp-wrap{position:relative}
+.cp-btn{position:absolute;top:10px;right:10px;display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 12px;border-radius:8px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.1);color:#e2e8f0;font:600 12px Inter,-apple-system,sans-serif;cursor:pointer;backdrop-filter:blur(6px);transition:all .15s;z-index:2}
+.cp-btn:hover{background:#35609f;border-color:#35609f;color:#fff}
+.cp-btn.ok{background:#16a34a;border-color:#16a34a;color:#fff}
+.cp-btn svg{width:14px;height:14px}
+.content pre{padding-top:48px!important}
+.cp-main{display:inline-flex;align-items:center;gap:8px;margin:0 0 12px;height:38px;padding:0 16px;border-radius:10px;border:0;background:linear-gradient(135deg,#6b9be0,#35609f);color:#fff;font:700 13px Inter,-apple-system,sans-serif;cursor:pointer;box-shadow:0 3px 12px rgba(53,96,159,.3)}
+.cp-main.ok{background:#16a34a}
 `;
 
+const COPYJS = '<script>(function(){var I=\'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>\';function cp(b,t,l){(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).catch(function(){var a=document.createElement(\'textarea\');a.value=t;document.body.appendChild(a);a.select();document.execCommand(\'copy\');a.remove()}).finally(function(){b.classList.add(\'ok\');b.innerHTML=I+\'Copied!\';setTimeout(function(){b.classList.remove(\'ok\');b.innerHTML=I+l},1800)})}document.querySelectorAll(\'.content pre\').forEach(function(p){var w=document.createElement(\'div\');w.className=\'cp-wrap\';p.parentNode.insertBefore(w,p);w.appendChild(p);var b=document.createElement(\'button\');b.type=\'button\';b.className=\'cp-btn\';b.innerHTML=I+\'Copy\';b.setAttribute(\'aria-label\',\'Copy to clipboard\');b.onclick=function(){cp(b,p.innerText,\'Copy\')};w.appendChild(b)});var bp=document.querySelector(\'.content .blog-prompt\');if(bp){var pr=bp.querySelector(\'pre\');if(pr){var m=document.createElement(\'button\');m.type=\'button\';m.className=\'cp-main\';m.innerHTML=I+\'Copy full prompt\';m.onclick=function(){cp(m,pr.innerText,\'Copy full prompt\')};var h=bp.querySelector(\'h2\');h?h.after(m):bp.prepend(m)}}})();</script>';
 const LOGO = (RESUME.match(/<div class="brand-logo"[^>]*>(<svg[\s\S]*?<\/svg>)<\/div>/) || [, ''])[1];
 const FAVICON = (RESUME.match(/<link rel="icon"[^>]*>/) || [''])[0];
 
@@ -130,14 +139,17 @@ let CATS = [];
 async function refreshCats() { try { const d = await api('?page=1&limit=1'); if (d.categories) CATS = d.categories; } catch {} }
 const SEARCH_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>';
 function subnav(active = '', q = '', home = false) {
-  const items = [`<a href="/" class="sn-l${home && !active && !q ? ' on' : ''}">All</a>`].concat(CATS.map(c => `<a href="/category/${slugify(c.category)}" class="sn-l${c.category === active ? ' on' : ''}">${esc(c.category.replace(/ Prompts$/, ''))}</a>`));
+  const items = [`<a href="/" class="sn-l${home && !active && !q ? ' on' : ''}">All</a>`].concat(CATS.map(c => `<a href="/category/${slugify(c.category)}" class="sn-l${c.category === active ? ' on' : ''}">${esc(c.category.replace(/ Prompts$/, ''))}<span class="sn-c">${c.count}</span></a>`));
   return `<div class="subnav"><div class="sn-in"><nav class="sn-cats" aria-label="Categories">${items.join('')}</nav><form class="sn-search" action="/search" method="get" role="search">${SEARCH_ICON}<input type="search" name="q" value="${esc(q)}" placeholder="Search articles…" aria-label="Search articles"></form></div></div>`;
 }
 const SUBNAV_CSS = `@media(max-width:700px){.bar,.action-bar{position:relative!important}.subnav{top:0!important}}.subnav{position:sticky;top:57px;z-index:99;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid #e2e8f0}
 .sn-in{max-width:1140px;margin:0 auto;padding:0 20px;display:flex;align-items:center;gap:16px;height:50px}
 .sn-cats{flex:1;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;height:100%;align-items:stretch}.sn-cats::-webkit-scrollbar{display:none}
-.sn-l{display:flex;align-items:center;padding:0 12px;font:600 13.5px Inter,-apple-system,sans-serif;color:#64748b;text-decoration:none;white-space:nowrap;border-bottom:2px solid transparent;transition:color .15s,border-color .15s}
-.sn-l:hover{color:#0f172a}.sn-l.on{color:#35609f;border-bottom-color:#35609f}
+.sn-cats{gap:6px!important;align-items:center!important}
+.sn-l{display:flex;align-items:center;height:32px;padding:0 14px;border-radius:999px;font:700 11.5px Inter,-apple-system,sans-serif;letter-spacing:.09em;text-transform:uppercase;color:#475569;text-decoration:none;white-space:nowrap;border:1px solid transparent;transition:all .18s}
+.sn-l:hover{color:#35609f;background:#eef3fa}
+.sn-l.on{color:#fff;background:linear-gradient(135deg,#6b9be0,#35609f);box-shadow:0 3px 10px rgba(53,96,159,.28)}
+.sn-c{margin-left:7px;font-size:10px;font-weight:700;padding:1px 6px;border-radius:999px;background:rgba(100,116,139,.12);color:inherit;letter-spacing:0}.sn-l.on .sn-c{background:rgba(255,255,255,.25)}
 .sn-search{position:relative;width:240px;flex-shrink:0}
 .sn-search svg{position:absolute;left:11px;top:50%;width:15px;height:15px;transform:translateY(-50%);color:#94a3b8;pointer-events:none}
 .sn-search input{width:100%;height:34px;padding:0 12px 0 33px;border:1px solid #e2e8f0;border-radius:999px;background:#f8fafc;font:14px Inter,-apple-system,sans-serif;color:#0f172a;outline:none;transition:all .15s}
@@ -161,6 +173,7 @@ ${subnav(cat, q, active === 'blog' && canonical === SITE + '/')}
 <main>${body}</main>
 <footer class="site"><div class="in"><span>© ${new Date().getFullYear()} Kaushik Sarkar · kaushiksarkar.com</span><span><a href="/">Blogs</a><a href="/resume">Resume</a><a href="https://www.linkedin.com/in/kaushik-sarkar-93115728/" rel="noopener" target="_blank">LinkedIn</a><a class="pg" href="https://promptgrabber.com" target="_blank" rel="noopener">More AI prompts at PromptGrabber.com →</a></span></div></footer>
 <script>(function(){var e=document.querySelector('.tw');if(!e)return;var t=e.dataset.text,i=0,C=['#6b9be0','#5f8fd5','#5584ca','#4a78bf','#406cb3','#35609f'];function r(n){var k=0;e.innerHTML=t.slice(0,n).split('').map(function(c){return c===' '?'<span style="display:inline-block;width:.45em"></span>':'<span style="color:'+C[k++%C.length]+'">'+c+'</span>'}).join('')}if(matchMedia('(prefers-reduced-motion: reduce)').matches){r(t.length);return}r(0);(function s(){r(++i);if(i<t.length)setTimeout(s,110)})()})();</script>
+${active === 'blog' ? COPYJS : ''}
 </body></html>`;
 }
 
