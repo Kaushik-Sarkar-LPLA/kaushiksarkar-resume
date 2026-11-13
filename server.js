@@ -135,6 +135,7 @@ footer.site a:hover{color:var(--accent-dark)}
 `;
 
 const COPYJS = '<script>(function(){var I=\'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>\';function cp(b,t,l){(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).catch(function(){var a=document.createElement(\'textarea\');a.value=t;document.body.appendChild(a);a.select();document.execCommand(\'copy\');a.remove()}).finally(function(){b.classList.add(\'ok\');b.innerHTML=I+\'Copied!\';setTimeout(function(){b.classList.remove(\'ok\');b.innerHTML=I+l},1800)})}document.querySelectorAll(\'.content pre\').forEach(function(p){if(p.closest(\'.blog-prompt\'))return;var w=document.createElement(\'div\');w.className=\'cp-wrap\';p.parentNode.insertBefore(w,p);w.appendChild(p);var b=document.createElement(\'button\');b.type=\'button\';b.className=\'cp-btn\';b.innerHTML=I+\'Copy\';b.setAttribute(\'aria-label\',\'Copy to clipboard\');b.onclick=function(){cp(b,p.innerText,\'Copy\')};w.appendChild(b)});var bp=document.querySelector(\'.content .blog-prompt\');if(bp){var pr=bp.querySelector(\'pre\');if(pr){var m=document.createElement(\'button\');m.type=\'button\';m.className=\'cp-main\';m.innerHTML=I+\'Copy full prompt\';m.onclick=function(){cp(m,pr.innerText,\'Copy full prompt\')};var h=bp.querySelector(\'h2\');if(h){var r=document.createElement(\'div\');r.className=\'bp-head\';h.parentNode.insertBefore(r,h);r.appendChild(h);r.appendChild(m)}else bp.prepend(m)}}})();</script>';
+const BARJS = "<script>(function(){var b=document.querySelector('.bar,.action-bar');if(!b)return;function f(){var h=b.getBoundingClientRect().height;document.documentElement.style.setProperty('--bar-h',(innerWidth<=700?0:h-1)+'px')}f();addEventListener('resize',f);document.fonts&&document.fonts.ready.then(f)})();</script>";
 const LOGO = (RESUME.match(/<div class="brand-logo"[^>]*>(<svg[\s\S]*?<\/svg>)<\/div>/) || [, ''])[1];
 const FAVICON = (RESUME.match(/<link rel="icon"[^>]*>/) || [''])[0];
 
@@ -147,7 +148,7 @@ function subnav(active = '', q = '', home = false) {
   items.push(`<a href="/resume" class="sn-l sn-res${active === '__resume' ? ' on' : ''}">Resume</a>`);
   return `<div class="subnav"><div class="sn-in"><nav class="sn-cats" aria-label="Categories">${items.join('')}</nav><form class="sn-search" action="/search" method="get" role="search">${SEARCH_ICON}<input type="search" name="q" value="${esc(q)}" placeholder="Search articles…" aria-label="Search articles"></form></div></div>`;
 }
-const SUBNAV_CSS = `@media(max-width:700px){.bar,.action-bar{position:relative!important}.subnav{top:0!important}}.subnav{position:sticky;top:57px;z-index:99;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid #e2e8f0}
+const SUBNAV_CSS = `.bar,.action-bar{background:#fff!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}.subnav{position:sticky;top:var(--bar-h,57px);z-index:99;background:#fff;margin-top:-1px;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid #e2e8f0}
 .sn-in{max-width:1140px;margin:0 auto;padding:0 20px;display:flex;align-items:center;gap:16px;height:50px}
 .sn-cats{flex:1;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;height:100%;align-items:stretch}.sn-cats::-webkit-scrollbar{display:none}
 .sn-cats{gap:6px!important;align-items:center!important}
@@ -160,7 +161,7 @@ const SUBNAV_CSS = `@media(max-width:700px){.bar,.action-bar{position:relative!i
 .sn-search svg{position:absolute;left:11px;top:50%;width:15px;height:15px;transform:translateY(-50%);color:#94a3b8;pointer-events:none}
 .sn-search input{width:100%;height:34px;padding:0 12px 0 33px;border:1px solid #e2e8f0;border-radius:999px;background:#f8fafc;font:14px Inter,-apple-system,sans-serif;color:#0f172a;outline:none;transition:all .15s}
 .sn-search input:focus{background:#fff;border-color:#6b9be0;box-shadow:0 0 0 3px rgba(74,123,200,.18)}
-@media(max-width:700px){.sn-in{flex-wrap:wrap;height:auto;padding:8px 14px;gap:8px}.sn-search{width:100%;order:-1}.sn-cats{height:36px}}`;
+@media(max-width:700px){.bar,.action-bar{position:relative!important}.sn-in{flex-wrap:wrap;height:auto;padding:8px 14px;gap:8px}.sn-search{width:100%;order:-1}.sn-cats{height:36px}}`;
 
 function layout({ title, desc, canonical, active, body, image, jsonld, robots, cat = '', q = '' }) {
   return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -180,6 +181,7 @@ ${subnav(cat, q, active === 'blog' && canonical === SITE + '/')}
 <footer class="site"><div class="in"><span>© ${new Date().getFullYear()} Kaushik Sarkar · kaushiksarkar.com</span><span><a href="/">Blogs</a><a href="/resume">Resume</a><a href="https://www.linkedin.com/in/kaushik-sarkar-93115728/" rel="noopener" target="_blank">LinkedIn</a><a class="pg" href="https://promptgrabber.com" target="_blank" rel="noopener">More AI prompts at PromptGrabber.com →</a></span></div></footer>
 <script>(function(){var e=document.querySelector('.tw');if(!e)return;var t=e.dataset.text,i=0,C=['#6b9be0','#5f8fd5','#5584ca','#4a78bf','#406cb3','#35609f'];function r(n){var k=0;e.innerHTML=t.slice(0,n).split('').map(function(c){return c===' '?'<span style="display:inline-block;width:.45em"></span>':'<span style="color:'+C[k++%C.length]+'">'+c+'</span>'}).join('')}if(matchMedia('(prefers-reduced-motion: reduce)').matches){r(t.length);return}r(0);(function s(){r(++i);if(i<t.length)setTimeout(s,110)})()})();</script>
 ${active === 'blog' ? COPYJS : ''}
+<script>(function(){var b=document.querySelector('.bar,.action-bar');if(!b)return;function f(){var h=b.getBoundingClientRect().height;document.documentElement.style.setProperty('--bar-h',(innerWidth<=700?0:h-1)+'px')}f();addEventListener('resize',f);document.fonts&&document.fonts.ready.then(f)})();</script>
 </body></html>`;
 }
 
@@ -265,7 +267,7 @@ http.createServer(async (req, res) => {
     if (p === '/' && u.searchParams.get('category')) { const c = slugify(u.searchParams.get('category')); res.writeHead(301, { Location: `/category/${c}` }); return res.end(); }
     if (p === '/' && u.searchParams.get('q')) { res.writeHead(301, { Location: `/search?q=${encodeURIComponent(u.searchParams.get('q'))}` }); return res.end(); }
     if (p === '/') return send(res, 200, 'text/html; charset=utf-8', await listPage(pg));
-    if (p === '/resume' || p === '/resume.html') return send(res, 200, 'text/html; charset=utf-8', RESUME.replace('</style>', SUBNAV_CSS + '</style>').replace('</header>', '</header>' + subnav('__resume')), 600);
+    if (p === '/resume' || p === '/resume.html') return send(res, 200, 'text/html; charset=utf-8', RESUME.replace('</style>', SUBNAV_CSS + '</style>').replace('</header>', '</header>' + subnav('__resume')).replace('</body>', BARJS + '</body>'), 600);
     if (p === '/index.html' || p === '/blog' || p === '/blogs') { res.writeHead(301, { Location: '/' }); return res.end(); }
     let m = p.match(/^\/blog\/([a-z0-9-]+)$/i);
     if (m) { const h = await postPage(m[1]); return h ? send(res, 200, 'text/html; charset=utf-8', h) : send(res, 404, 'text/html; charset=utf-8', notFound()); }
