@@ -41,7 +41,7 @@ a{color:var(--accent-dark)}
 .btn{display:inline-flex;align-items:center;gap:7px;padding:7px 16px;font-size:12px;font-weight:600;border-radius:6px;text-decoration:none;transition:all .2s;border:1px solid rgba(0,0,0,.072);background:rgba(0,0,0,.048);color:#212121;min-height:36px}
 .btn:hover{background:rgba(0,0,0,.096)}
 .btn.on{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-color:transparent;box-shadow:0 2px 10px var(--glow)}
-main{flex:1;width:100%;max-width:1140px;margin:0 auto;padding:36px 20px}
+main{flex:1;width:100%;max-width:1140px;margin:0 auto;padding:22px 20px 36px}
 .hero{margin-bottom:28px}
 .hero h1{font-size:30px;font-weight:800;letter-spacing:-.02em}
 .hero p{color:var(--muted);margin-top:6px}
@@ -108,7 +108,9 @@ article header .meta{margin-bottom:22px}
 .content th{background:#f5f3ff;color:#0f172a}
 .content th,.content td{border:1px solid var(--border);padding:9px 12px;text-align:left}
 article header h1{background:linear-gradient(135deg,#0f172a 30%,#6d28d9);-webkit-background-clip:text;background-clip:text;color:transparent}
-.cat{color:#6d28d9;background:#f5f3ff;border:1px solid #ddd6fe}
+.cat{display:inline-flex;align-items:center;height:24px;padding:0 11px!important;font:700 10.5px Inter,-apple-system,sans-serif!important;letter-spacing:.09em;text-transform:uppercase;text-decoration:none;color:#35609f!important;background:#eef3fa!important;border:1px solid #d5e2f4;border-radius:999px}
+a.cat:hover{background:linear-gradient(135deg,#6b9be0,#35609f)!important;color:#fff!important;border-color:transparent}
+article header .cat{margin-bottom:2px}
 .faq{margin-top:36px}
 .faq details{border:1px solid var(--border);border-radius:10px;padding:12px 16px;margin-bottom:10px}
 .faq summary{font-weight:600;cursor:pointer}
@@ -126,11 +128,13 @@ footer.site a:hover{color:var(--accent-dark)}
 .cp-btn.ok{background:#16a34a;border-color:#16a34a;color:#fff}
 .cp-btn svg{width:14px;height:14px}
 .content pre{padding-top:48px!important}
-.cp-main{display:inline-flex;align-items:center;gap:8px;margin:0 0 12px;height:38px;padding:0 16px;border-radius:10px;border:0;background:linear-gradient(135deg,#6b9be0,#35609f);color:#fff;font:700 13px Inter,-apple-system,sans-serif;cursor:pointer;box-shadow:0 3px 12px rgba(53,96,159,.3)}
+.content .blog-prompt pre{padding:0!important;margin-top:14px!important}
+.bp-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.bp-head h2{margin:0!important}
+.cp-main{display:inline-flex;align-items:center;gap:8px;margin:0;height:34px;padding:0 16px;border-radius:10px;border:0;background:linear-gradient(135deg,#6b9be0,#35609f);color:#fff;font:700 13px Inter,-apple-system,sans-serif;cursor:pointer;box-shadow:0 3px 12px rgba(53,96,159,.3)}
 .cp-main.ok{background:#16a34a}
 `;
 
-const COPYJS = '<script>(function(){var I=\'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>\';function cp(b,t,l){(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).catch(function(){var a=document.createElement(\'textarea\');a.value=t;document.body.appendChild(a);a.select();document.execCommand(\'copy\');a.remove()}).finally(function(){b.classList.add(\'ok\');b.innerHTML=I+\'Copied!\';setTimeout(function(){b.classList.remove(\'ok\');b.innerHTML=I+l},1800)})}document.querySelectorAll(\'.content pre\').forEach(function(p){var w=document.createElement(\'div\');w.className=\'cp-wrap\';p.parentNode.insertBefore(w,p);w.appendChild(p);var b=document.createElement(\'button\');b.type=\'button\';b.className=\'cp-btn\';b.innerHTML=I+\'Copy\';b.setAttribute(\'aria-label\',\'Copy to clipboard\');b.onclick=function(){cp(b,p.innerText,\'Copy\')};w.appendChild(b)});var bp=document.querySelector(\'.content .blog-prompt\');if(bp){var pr=bp.querySelector(\'pre\');if(pr){var m=document.createElement(\'button\');m.type=\'button\';m.className=\'cp-main\';m.innerHTML=I+\'Copy full prompt\';m.onclick=function(){cp(m,pr.innerText,\'Copy full prompt\')};var h=bp.querySelector(\'h2\');h?h.after(m):bp.prepend(m)}}})();</script>';
+const COPYJS = '<script>(function(){var I=\'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>\';function cp(b,t,l){(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).catch(function(){var a=document.createElement(\'textarea\');a.value=t;document.body.appendChild(a);a.select();document.execCommand(\'copy\');a.remove()}).finally(function(){b.classList.add(\'ok\');b.innerHTML=I+\'Copied!\';setTimeout(function(){b.classList.remove(\'ok\');b.innerHTML=I+l},1800)})}document.querySelectorAll(\'.content pre\').forEach(function(p){if(p.closest(\'.blog-prompt\'))return;var w=document.createElement(\'div\');w.className=\'cp-wrap\';p.parentNode.insertBefore(w,p);w.appendChild(p);var b=document.createElement(\'button\');b.type=\'button\';b.className=\'cp-btn\';b.innerHTML=I+\'Copy\';b.setAttribute(\'aria-label\',\'Copy to clipboard\');b.onclick=function(){cp(b,p.innerText,\'Copy\')};w.appendChild(b)});var bp=document.querySelector(\'.content .blog-prompt\');if(bp){var pr=bp.querySelector(\'pre\');if(pr){var m=document.createElement(\'button\');m.type=\'button\';m.className=\'cp-main\';m.innerHTML=I+\'Copy full prompt\';m.onclick=function(){cp(m,pr.innerText,\'Copy full prompt\')};var h=bp.querySelector(\'h2\');if(h){var r=document.createElement(\'div\');r.className=\'bp-head\';h.parentNode.insertBefore(r,h);r.appendChild(h);r.appendChild(m)}else bp.prepend(m)}}})();</script>';
 const LOGO = (RESUME.match(/<div class="brand-logo"[^>]*>(<svg[\s\S]*?<\/svg>)<\/div>/) || [, ''])[1];
 const FAVICON = (RESUME.match(/<link rel="icon"[^>]*>/) || [''])[0];
 
@@ -140,6 +144,7 @@ async function refreshCats() { try { const d = await api('?page=1&limit=1'); if 
 const SEARCH_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>';
 function subnav(active = '', q = '', home = false) {
   const items = [`<a href="/" class="sn-l${home && !active && !q ? ' on' : ''}">All</a>`].concat(CATS.map(c => `<a href="/category/${slugify(c.category)}" class="sn-l${c.category === active ? ' on' : ''}">${esc(c.category.replace(/ Prompts$/, ''))}<span class="sn-c">${c.count}</span></a>`));
+  items.push(`<a href="/resume" class="sn-l sn-res${active === '__resume' ? ' on' : ''}">Resume</a>`);
   return `<div class="subnav"><div class="sn-in"><nav class="sn-cats" aria-label="Categories">${items.join('')}</nav><form class="sn-search" action="/search" method="get" role="search">${SEARCH_ICON}<input type="search" name="q" value="${esc(q)}" placeholder="Search articles…" aria-label="Search articles"></form></div></div>`;
 }
 const SUBNAV_CSS = `@media(max-width:700px){.bar,.action-bar{position:relative!important}.subnav{top:0!important}}.subnav{position:sticky;top:57px;z-index:99;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid #e2e8f0}
@@ -150,6 +155,7 @@ const SUBNAV_CSS = `@media(max-width:700px){.bar,.action-bar{position:relative!i
 .sn-l:hover{color:#35609f;background:#eef3fa}
 .sn-l.on{color:#fff;background:linear-gradient(135deg,#6b9be0,#35609f);box-shadow:0 3px 10px rgba(53,96,159,.28)}
 .sn-c{margin-left:7px;font-size:10px;font-weight:700;padding:1px 6px;border-radius:999px;background:rgba(100,116,139,.12);color:inherit;letter-spacing:0}.sn-l.on .sn-c{background:rgba(255,255,255,.25)}
+.sn-res{margin-left:auto;border-color:#d5e2f4!important}
 .sn-search{position:relative;width:240px;flex-shrink:0}
 .sn-search svg{position:absolute;left:11px;top:50%;width:15px;height:15px;transform:translateY(-50%);color:#94a3b8;pointer-events:none}
 .sn-search input{width:100%;height:34px;padding:0 12px 0 33px;border:1px solid #e2e8f0;border-radius:999px;background:#f8fafc;font:14px Inter,-apple-system,sans-serif;color:#0f172a;outline:none;transition:all .15s}
@@ -168,7 +174,7 @@ ${FAVICON}<meta name="theme-color" content="#ffffff">
 <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Montserrat:wght@300;800&family=Caveat:wght@700&family=Inter:wght@400;600;700;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
 <style>${CSS}${SUBNAV_CSS}</style>${jsonld ? `<script type="application/ld+json">${JSON.stringify(jsonld).replace(/</g, '\\u003c')}</script>` : ''}</head><body>
 <header class="bar"><div class="bar-in"><a href="/" class="brand" aria-label="Kaushik Sarkar Blogs home"><div class="logo">${LOGO}</div><span class="bn"><span class="tw" data-text="KAUSHIK SARKAR" aria-label="Kaushik Sarkar">KAUSHIK SARKAR</span><span class="bn-blog">Blogs</span></span></a>
-<nav class="nav"><a href="/" class="btn ${active === 'blog' ? 'on' : ''}">Blogs</a><a href="/resume" class="btn icon-btn ${active === 'resume' ? 'on' : ''}" title="Resume" aria-label="Resume"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8M16 17H8M10 9H8"/></svg></a></nav></div></header>
+</div></header>
 ${subnav(cat, q, active === 'blog' && canonical === SITE + '/')}
 <main>${body}</main>
 <footer class="site"><div class="in"><span>© ${new Date().getFullYear()} Kaushik Sarkar · kaushiksarkar.com</span><span><a href="/">Blogs</a><a href="/resume">Resume</a><a href="https://www.linkedin.com/in/kaushik-sarkar-93115728/" rel="noopener" target="_blank">LinkedIn</a><a class="pg" href="https://promptgrabber.com" target="_blank" rel="noopener">More AI prompts at PromptGrabber.com →</a></span></div></footer>
@@ -216,7 +222,7 @@ async function postPage(slug) {
   ldOut['@type'] = ldOut['@type'] || undefined;
   return layout({
     title: (p.meta_title || p.title) + ' | Kaushik Sarkar Blogs', desc: p.meta_description || p.excerpt, canonical: url, active: 'blog', cat: p.category || '', image: p.cover_image, jsonld: ldOut,
-    body: `<article><header><a href="/" style="font-size:13px;text-decoration:none">← All articles</a><br>${p.category ? `<span class="cat">${esc(p.category)}</span>` : ''}<h1>${esc(p.title)}</h1><div class="meta">By Kaushik Sarkar · <time datetime="${esc(p.published_at)}">${fmtDate(p.published_at)}</time> · ${p.reading_minutes || 5} min read</div></header>
+    body: `<article><header>${p.category ? `<a class="cat" href="/category/${slugify(p.category)}">${esc(p.category)}</a>` : ''}<h1>${esc(p.title)}</h1><div class="meta">By Kaushik Sarkar · <time datetime="${esc(p.published_at)}">${fmtDate(p.published_at)}</time> · ${p.reading_minutes || 5} min read</div></header>
 ${html.includes(p.cover_image) || !p.cover_image ? '' : `<img class="cover" src="${esc(p.cover_image)}" alt="${esc(p.cover_alt || p.title)}">`}
 <div class="content">${html}</div>
 ${faq.length && !/id="faq"/.test(html) ? `<section class="faq"><h2>FAQ</h2>${faq.map(f => `<details><summary>${esc(f.q)}</summary><p>${esc(f.a)}</p></details>`).join('')}</section>` : ''}
@@ -259,7 +265,7 @@ http.createServer(async (req, res) => {
     if (p === '/' && u.searchParams.get('category')) { const c = slugify(u.searchParams.get('category')); res.writeHead(301, { Location: `/category/${c}` }); return res.end(); }
     if (p === '/' && u.searchParams.get('q')) { res.writeHead(301, { Location: `/search?q=${encodeURIComponent(u.searchParams.get('q'))}` }); return res.end(); }
     if (p === '/') return send(res, 200, 'text/html; charset=utf-8', await listPage(pg));
-    if (p === '/resume' || p === '/resume.html') return send(res, 200, 'text/html; charset=utf-8', RESUME.replace('</style>', SUBNAV_CSS + '</style>').replace('</header>', '</header>' + subnav()), 600);
+    if (p === '/resume' || p === '/resume.html') return send(res, 200, 'text/html; charset=utf-8', RESUME.replace('</style>', SUBNAV_CSS + '</style>').replace('</header>', '</header>' + subnav('__resume')), 600);
     if (p === '/index.html' || p === '/blog' || p === '/blogs') { res.writeHead(301, { Location: '/' }); return res.end(); }
     let m = p.match(/^\/blog\/([a-z0-9-]+)$/i);
     if (m) { const h = await postPage(m[1]); return h ? send(res, 200, 'text/html; charset=utf-8', h) : send(res, 404, 'text/html; charset=utf-8', notFound()); }
