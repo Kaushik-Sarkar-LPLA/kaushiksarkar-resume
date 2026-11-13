@@ -125,7 +125,26 @@ footer.site a:hover{color:var(--accent-dark)}
 const LOGO = (RESUME.match(/<div class="brand-logo"[^>]*>(<svg[\s\S]*?<\/svg>)<\/div>/) || [, ''])[1];
 const FAVICON = (RESUME.match(/<link rel="icon"[^>]*>/) || [''])[0];
 
-function layout({ title, desc, canonical, active, body, image, jsonld, robots }) {
+const slugify = c => c.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+let CATS = [];
+async function refreshCats() { try { const d = await api('?page=1&limit=1'); if (d.categories) CATS = d.categories; } catch {} }
+const SEARCH_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>';
+function subnav(active = '', q = '', home = false) {
+  const items = [`<a href="/" class="sn-l${home && !active && !q ? ' on' : ''}">All</a>`].concat(CATS.map(c => `<a href="/category/${slugify(c.category)}" class="sn-l${c.category === active ? ' on' : ''}">${esc(c.category.replace(/ Prompts$/, ''))}</a>`));
+  return `<div class="subnav"><div class="sn-in"><nav class="sn-cats" aria-label="Categories">${items.join('')}</nav><form class="sn-search" action="/search" method="get" role="search">${SEARCH_ICON}<input type="search" name="q" value="${esc(q)}" placeholder="Search articles…" aria-label="Search articles"></form></div></div>`;
+}
+const SUBNAV_CSS = `.subnav{position:sticky;top:57px;z-index:99;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid #e2e8f0}
+.sn-in{max-width:1140px;margin:0 auto;padding:0 20px;display:flex;align-items:center;gap:16px;height:50px}
+.sn-cats{flex:1;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;height:100%;align-items:stretch}.sn-cats::-webkit-scrollbar{display:none}
+.sn-l{display:flex;align-items:center;padding:0 12px;font:600 13.5px Inter,-apple-system,sans-serif;color:#64748b;text-decoration:none;white-space:nowrap;border-bottom:2px solid transparent;transition:color .15s,border-color .15s}
+.sn-l:hover{color:#0f172a}.sn-l.on{color:#35609f;border-bottom-color:#35609f}
+.sn-search{position:relative;width:240px;flex-shrink:0}
+.sn-search svg{position:absolute;left:11px;top:50%;width:15px;height:15px;transform:translateY(-50%);color:#94a3b8;pointer-events:none}
+.sn-search input{width:100%;height:34px;padding:0 12px 0 33px;border:1px solid #e2e8f0;border-radius:999px;background:#f8fafc;font:14px Inter,-apple-system,sans-serif;color:#0f172a;outline:none;transition:all .15s}
+.sn-search input:focus{background:#fff;border-color:#6b9be0;box-shadow:0 0 0 3px rgba(74,123,200,.18)}
+@media(max-width:700px){.sn-in{flex-wrap:wrap;height:auto;padding:8px 14px;gap:8px}.sn-search{width:100%;order:-1}.sn-cats{height:36px}}`;
+
+function layout({ title, desc, canonical, active, body, image, jsonld, robots, cat = '', q = '' }) {
   return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${esc(title)}</title><meta name="description" content="${esc(desc)}"><link rel="canonical" href="${canonical}">
 ${robots ? `<meta name="robots" content="${robots}">` : ''}
@@ -135,9 +154,10 @@ ${image ? `<meta property="og:image" content="${esc(image)}"><meta name="twitter
 ${FAVICON}<meta name="theme-color" content="#ffffff">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Montserrat:wght@300;800&family=Caveat:wght@700&family=Inter:wght@400;600;700;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
-<style>${CSS}</style>${jsonld ? `<script type="application/ld+json">${JSON.stringify(jsonld).replace(/</g, '\\u003c')}</script>` : ''}</head><body>
+<style>${CSS}${SUBNAV_CSS}</style>${jsonld ? `<script type="application/ld+json">${JSON.stringify(jsonld).replace(/</g, '\\u003c')}</script>` : ''}</head><body>
 <header class="bar"><div class="bar-in"><a href="/" class="brand" aria-label="Kaushik Sarkar Blogs home"><div class="logo">${LOGO}</div><span class="bn"><span class="tw" data-text="KAUSHIK SARKAR" aria-label="Kaushik Sarkar">KAUSHIK SARKAR</span><span class="bn-blog">Blogs</span></span></a>
 <nav class="nav"><a href="/" class="btn ${active === 'blog' ? 'on' : ''}">Blogs</a><a href="/resume" class="btn icon-btn ${active === 'resume' ? 'on' : ''}" title="Resume" aria-label="Resume"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8M16 17H8M10 9H8"/></svg></a></nav></div></header>
+${subnav(cat, q, active === 'blog' && canonical === SITE + '/')}
 <main>${body}</main>
 <footer class="site"><div class="in"><span>© ${new Date().getFullYear()} Kaushik Sarkar · kaushiksarkar.com</span><span><a href="/">Blogs</a><a href="/resume">Resume</a><a href="https://www.linkedin.com/in/kaushik-sarkar-93115728/" rel="noopener" target="_blank">LinkedIn</a><a class="pg" href="https://promptgrabber.com" target="_blank" rel="noopener">More AI prompts at PromptGrabber.com →</a></span></div></footer>
 <script>(function(){var e=document.querySelector('.tw');if(!e)return;var t=e.dataset.text,i=0,C=['#6b9be0','#5f8fd5','#5584ca','#4a78bf','#406cb3','#35609f'];function r(n){var k=0;e.innerHTML=t.slice(0,n).split('').map(function(c){return c===' '?'<span style="display:inline-block;width:.45em"></span>':'<span style="color:'+C[k++%C.length]+'">'+c+'</span>'}).join('')}if(matchMedia('(prefers-reduced-motion: reduce)').matches){r(t.length);return}r(0);(function s(){r(++i);if(i<t.length)setTimeout(s,110)})()})();</script>
@@ -148,23 +168,25 @@ const card = p => `<a class="card" href="/blog/${esc(p.slug)}">${p.cover_image ?
 
 async function listPage(page, q = '', cat = '') {
   q = q.slice(0, 80); cat = cat.slice(0, 60);
-  const qs = (pg) => { const sp = new URLSearchParams(); if (q) sp.set('q', q); if (cat) sp.set('category', cat); if (pg > 1) sp.set('page', pg); const t = sp.toString(); return t ? `/?${t}` : '/'; };
+  const base = q ? '/search' : cat ? `/category/${slugify(cat)}` : '/';
+  const qs = (pg) => { const sp = new URLSearchParams(); if (q) sp.set('q', q); if (pg > 1) sp.set('page', pg); const t = sp.toString(); return t ? `${base}?${t}` : base; };
   const d = await api(`?page=${page}&limit=${PER}${q ? `&search=${encodeURIComponent(q)}` : ''}${cat ? `&category=${encodeURIComponent(cat)}` : ''}`);
   const tp = Math.max(1, d.totalPages || 1);
-  const filtered = !!(q || cat);
-  const canonical = filtered ? `${SITE}/` : (page > 1 ? `${SITE}/?page=${page}` : `${SITE}/`);
+  const filtered = !!q;
+  const canonical = SITE + qs(page);
   const nums = []; const win = new Set([1, tp]); for (let i = page - 2; i <= page + 2; i++) if (i >= 1 && i <= tp) win.add(i);
   [...win].sort((x, y) => x - y).forEach((n, i, arr) => { if (i && n - arr[i - 1] > 1) nums.push('<span class="pg-gap">…</span>'); nums.push(n === page ? `<span class="pg-n on" aria-current="page">${n}</span>` : `<a class="pg-n" href="${qs(n)}">${n}</a>`); });
   const pager = tp > 1 ? `<nav class="pager" aria-label="Pagination">${page > 1 ? `<a class="pg-n pg-arrow" rel="prev" href="${qs(page - 1)}" aria-label="Previous page">‹</a>` : ''}${nums.join('')}${page < tp ? `<a class="pg-n pg-arrow" rel="next" href="${qs(page + 1)}" aria-label="Next page">›</a>` : ''}</nav>` : '';
   const cats = (d.categories || []).map(c => `<option value="${esc(c.category)}"${c.category === cat ? ' selected' : ''}>${esc(c.category)} (${c.count})</option>`).join('');
   const tools = `<form class="tools" method="get" action="/" role="search"><div class="srch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input type="search" name="q" value="${esc(q)}" placeholder="Search articles…" aria-label="Search articles"></div><select name="category" aria-label="Category" onchange="this.form.submit()"><option value="">All categories</option>${cats}</select><button class="btn on" type="submit">Search</button>${filtered ? '<a class="btn" href="/">Clear</a>' : ''}</form>`;
   const heading = filtered ? `${d.total || 0} result${d.total === 1 ? '' : 's'}${q ? ` for “${esc(q)}”` : ''}${cat ? ` in ${esc(cat)}` : ''}` : 'Latest articles';
+  const H = cat && !q ? esc(cat) : heading;
   return layout({
-    title: filtered ? `Search${q ? ': ' + q : ''}${cat ? ' — ' + cat : ''} | Kaushik Sarkar Blogs` : page > 1 ? `Kaushik Sarkar Blogs — Page ${page}` : 'Kaushik Sarkar Blogs — AI Prompts, Tutorials & Engineering',
+    title: q ? `Search: ${q} | Kaushik Sarkar Blogs` : cat ? `${cat}${page > 1 ? ' — Page ' + page : ''} | Kaushik Sarkar Blogs` : page > 1 ? `Kaushik Sarkar Blogs — Page ${page}` : 'Kaushik Sarkar Blogs — AI Prompts, Tutorials & Engineering',
     desc: 'Articles by Kaushik Sarkar on AI image and video prompts, generative AI tutorials, and software engineering.',
-    canonical, active: 'blog', robots: filtered ? 'noindex,follow' : '',
+    canonical, active: 'blog', cat, q, robots: filtered ? 'noindex,follow' : '',
     jsonld: { '@context': 'https://schema.org', '@type': 'Blog', name: 'Kaushik Sarkar Blogs', url: SITE + '/', author: { '@type': 'Person', name: 'Kaushik Sarkar', url: SITE + '/resume' } },
-    body: `<section class="hero"><h1>${heading}</h1><p>AI prompts, generative AI tutorials and engineering notes by Kaushik Sarkar.</p></section>${tools}${d.posts.length ? `<div class="grid">${d.posts.map(card).join('')}</div>` : '<p class="empty">No articles found. Try a different search or category.</p>'}${pager}`,
+    body: `<section class="hero"><h1>${H}</h1><p>AI prompts, generative AI tutorials and engineering notes by Kaushik Sarkar.</p></section>${d.posts.length ? `<div class="grid">${d.posts.map(card).join('')}</div>` : '<p class="empty">No articles found. Try a different search or category.</p>'}${pager}`,
   });
 }
 
@@ -180,7 +202,7 @@ async function postPage(slug) {
   const ldOut = ld.length === 1 ? ld[0] : { '@context': 'https://schema.org', '@graph': ld.map(({ ['@context']: _, ...r }) => r) };
   ldOut['@type'] = ldOut['@type'] || undefined;
   return layout({
-    title: (p.meta_title || p.title) + ' | Kaushik Sarkar Blogs', desc: p.meta_description || p.excerpt, canonical: url, active: 'blog', image: p.cover_image, jsonld: ldOut,
+    title: (p.meta_title || p.title) + ' | Kaushik Sarkar Blogs', desc: p.meta_description || p.excerpt, canonical: url, active: 'blog', cat: p.category || '', image: p.cover_image, jsonld: ldOut,
     body: `<article><header><a href="/" style="font-size:13px;text-decoration:none">← All articles</a><br>${p.category ? `<span class="cat">${esc(p.category)}</span>` : ''}<h1>${esc(p.title)}</h1><div class="meta">By Kaushik Sarkar · <time datetime="${esc(p.published_at)}">${fmtDate(p.published_at)}</time> · ${p.reading_minutes || 5} min read</div></header>
 ${html.includes(p.cover_image) || !p.cover_image ? '' : `<img class="cover" src="${esc(p.cover_image)}" alt="${esc(p.cover_alt || p.title)}">`}
 <div class="content">${html}</div>
@@ -199,7 +221,7 @@ const xmlEsc = s => esc(s);
 async function sitemap() {
   const posts = await allPosts();
   const now = posts[0]?.updated_at || new Date().toISOString();
-  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n<url><loc>${SITE}/</loc><lastmod>${now}</lastmod><changefreq>daily</changefreq><priority>1.0</priority></url>\n<url><loc>${SITE}/resume</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>\n</urlset>`; // articles omitted: their canonical lives on promptgrabber.com
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n<url><loc>${SITE}/</loc><lastmod>${now}</lastmod><changefreq>daily</changefreq><priority>1.0</priority></url>\n${CATS.map(c => `<url><loc>${SITE}/category/${slugify(c.category)}</loc><changefreq>daily</changefreq><priority>0.6</priority></url>`).join('\n')}\n<url><loc>${SITE}/resume</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>\n</urlset>`; // articles omitted: their canonical lives on promptgrabber.com
 }
 async function rss() {
   const d = await api(`?page=1&limit=30`);
@@ -216,8 +238,15 @@ http.createServer(async (req, res) => {
   const u = new URL(req.url, SITE);
   const p = u.pathname.replace(/\/+$/, '') || '/';
   try {
-    if (p === '/') return send(res, 200, 'text/html; charset=utf-8', await listPage(Math.max(1, parseInt(u.searchParams.get('page')) || 1), (u.searchParams.get('q') || '').trim(), (u.searchParams.get('category') || '').trim()));
-    if (p === '/resume' || p === '/resume.html') return send(res, 200, 'text/html; charset=utf-8', RESUME, 3600);
+    if (!CATS.length || Math.random() < .05) await refreshCats();
+    const pg = Math.max(1, parseInt(u.searchParams.get('page')) || 1);
+    if (p === '/search') { const q = (u.searchParams.get('q') || '').trim(); if (!q) { res.writeHead(302, { Location: '/' }); return res.end(); } return send(res, 200, 'text/html; charset=utf-8', await listPage(pg, q, ''), 60); }
+    let cm = p.match(/^\/category\/([a-z0-9-]+)$/);
+    if (cm) { const c = CATS.find(x => slugify(x.category) === cm[1]); return c ? send(res, 200, 'text/html; charset=utf-8', await listPage(pg, '', c.category)) : send(res, 404, 'text/html; charset=utf-8', notFound()); }
+    if (p === '/' && u.searchParams.get('category')) { const c = slugify(u.searchParams.get('category')); res.writeHead(301, { Location: `/category/${c}` }); return res.end(); }
+    if (p === '/' && u.searchParams.get('q')) { res.writeHead(301, { Location: `/search?q=${encodeURIComponent(u.searchParams.get('q'))}` }); return res.end(); }
+    if (p === '/') return send(res, 200, 'text/html; charset=utf-8', await listPage(pg));
+    if (p === '/resume' || p === '/resume.html') return send(res, 200, 'text/html; charset=utf-8', RESUME.replace('</style>', SUBNAV_CSS + '</style>').replace('</header>', '</header>' + subnav()), 600);
     if (p === '/index.html' || p === '/blog' || p === '/blogs') { res.writeHead(301, { Location: '/' }); return res.end(); }
     let m = p.match(/^\/blog\/([a-z0-9-]+)$/i);
     if (m) { const h = await postPage(m[1]); return h ? send(res, 200, 'text/html; charset=utf-8', h) : send(res, 404, 'text/html; charset=utf-8', notFound()); }
