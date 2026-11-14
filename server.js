@@ -135,7 +135,7 @@ footer.site a:hover{color:var(--accent-dark)}
 `;
 
 const COPYJS = '<script>(function(){var I=\'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>\';function cp(b,t,l){(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).catch(function(){var a=document.createElement(\'textarea\');a.value=t;document.body.appendChild(a);a.select();document.execCommand(\'copy\');a.remove()}).finally(function(){b.classList.add(\'ok\');b.innerHTML=I+\'Copied!\';setTimeout(function(){b.classList.remove(\'ok\');b.innerHTML=I+l},1800)})}document.querySelectorAll(\'.content pre\').forEach(function(p){if(p.closest(\'.blog-prompt\'))return;var w=document.createElement(\'div\');w.className=\'cp-wrap\';p.parentNode.insertBefore(w,p);w.appendChild(p);var b=document.createElement(\'button\');b.type=\'button\';b.className=\'cp-btn\';b.innerHTML=I+\'Copy\';b.setAttribute(\'aria-label\',\'Copy to clipboard\');b.onclick=function(){cp(b,p.innerText,\'Copy\')};w.appendChild(b)});var bp=document.querySelector(\'.content .blog-prompt\');if(bp){var pr=bp.querySelector(\'pre\');if(pr){var m=document.createElement(\'button\');m.type=\'button\';m.className=\'cp-main\';m.innerHTML=I+\'Copy full prompt\';m.onclick=function(){cp(m,pr.innerText,\'Copy full prompt\')};var h=bp.querySelector(\'h2\');if(h){var r=document.createElement(\'div\');r.className=\'bp-head\';h.parentNode.insertBefore(r,h);r.appendChild(h);r.appendChild(m)}else bp.prepend(m)}}})();</script>';
-const BARJS = "<button type=\"button\" class=\"totop\" aria-label=\"Back to top\" title=\"Back to top\" onclick=\"window.scrollTo({top:0,behavior:'smooth'})\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m18 15-6-6-6 6\"/></svg></button><script>(function(){var b=document.querySelector('.totop');function f(){b.classList.toggle('show',scrollY>500)}addEventListener('scroll',f,{passive:true});f()})();</script><script>(function(){var b=document.querySelector('.bar,.action-bar');if(!b)return;function f(){var h=b.getBoundingClientRect().height;document.documentElement.style.setProperty('--bar-h',(innerWidth<=700?0:h-1)+'px')}f();addEventListener('resize',f);document.fonts&&document.fonts.ready.then(f)})();</script>";
+const BARJS = "<button type=\"button\" class=\"totop\" aria-label=\"Back to top\" title=\"Back to top\" onclick=\"window.scrollTo({top:0,behavior:'smooth'})\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m18 15-6-6-6 6\"/></svg></button><script>(function(){var b=document.querySelector('.totop');function f(){b.classList.toggle('show',scrollY>500)}addEventListener('scroll',f,{passive:true});f()})();</script><script>(function(){var b=document.querySelector('.bar,.action-bar');if(!b)return;function f(){var h=b.getBoundingClientRect().height;document.documentElement.style.setProperty('--bar-h',Math.max(0,Math.round(h)-1)+'px')}f();addEventListener('resize',f);if(window.ResizeObserver)new ResizeObserver(f).observe(b);document.fonts&&document.fonts.ready.then(f)})();</script>";
 const LOGO = (RESUME.match(/<div class="brand-logo"[^>]*>(<svg[\s\S]*?<\/svg>)<\/div>/) || [, ''])[1];
 const FAVICON = (RESUME.match(/<link rel="icon"[^>]*>/) || [''])[0];
 
@@ -143,28 +143,45 @@ const slugify = c => c.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/
 let CATS = [];
 async function refreshCats() { try { const d = await api('?page=1&limit=1'); if (d.categories) CATS = d.categories; } catch {} }
 const SEARCH_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>';
+function hdrSearch(q = '') {
+  return `<form class="sn-search${q ? ' open' : ''}" action="/search" method="get" role="search"><button type="button" class="sn-sbtn" aria-label="Open search" title="Search articles" onclick="var f=this.form,i=f.querySelector('input');f.classList.add('open');setTimeout(function(){i.focus()},10)">${SEARCH_ICON}</button><span class="sn-sico">${SEARCH_ICON}</span><input onblur="if(!this.value)this.form.classList.remove('open')" onkeydown="if(event.key==='Escape'){this.value='';this.form.classList.remove('open');this.blur()}" type="search" name="q" value="${esc(q)}" placeholder="Search articles…" aria-label="Search articles"><button type="button" class="sn-xbtn" aria-label="Close search" title="Close search" onmousedown="event.preventDefault()" onclick="var f=this.form,i=f.querySelector('input');i.value='';f.classList.remove('open')">&times;</button></form>`;
+}
 function subnav(active = '', q = '', home = false) {
   const items = [`<a href="/" class="sn-l${home && !active && !q ? ' on' : ''}">All</a>`].concat(CATS.map(c => `<a href="/category/${slugify(c.category)}" class="sn-l${c.category === active ? ' on' : ''}">${esc(c.category.replace(/ Prompts$/, ''))}<span class="sn-c">${c.count}</span></a>`));
-    const curName = q ? 'Search results' : active === '__resume' ? 'Blog categories' : active ? active.replace(/ Prompts$/, '') : 'All articles';
-  return `<div class="subnav"><div class="sn-in"><button type="button" class="sn-tog" aria-expanded="false" aria-controls="sn-cats" onclick="var n=this.closest('.subnav'),o=n.classList.toggle('open');this.setAttribute('aria-expanded',o)"><svg class="sn-hb" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg><span>${esc(curName)}</span><svg class="sn-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg></button><nav class="sn-cats" id="sn-cats" aria-label="Categories">${items.join('')}</nav><form class="sn-search" action="/search" method="get" role="search"><button type="button" class="sn-sbtn" aria-label="Open search" onclick="var f=this.form;f.classList.add('open');f.querySelector('input').focus()">${SEARCH_ICON}</button>${SEARCH_ICON}<input onblur="if(!this.value)this.form.classList.remove('open')" type="search" name="q" value="${esc(q)}" placeholder="Search articles…" aria-label="Search articles"></form></div></div>`;
+  const curName = q ? 'Search results' : active === '__resume' ? 'Blog categories' : active ? active.replace(/ Prompts$/, '') : 'All articles';
+  return `<div class="subnav"><div class="sn-in"><button type="button" class="sn-tog" aria-expanded="false" aria-controls="sn-cats" onclick="var n=this.closest('.subnav'),o=n.classList.toggle('open');this.setAttribute('aria-expanded',o)"><svg class="sn-hb" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg><span>${esc(curName)}</span><svg class="sn-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg></button><nav class="sn-cats" id="sn-cats" aria-label="Categories">${items.join('')}</nav></div></div>`;
 }
 const SUBNAV_CSS = `.totop{position:fixed;right:20px;bottom:20px;z-index:200;width:44px;height:44px;border-radius:12px;border:0;display:grid;place-items:center;background:linear-gradient(135deg,#6b9be0,#35609f);color:#fff;box-shadow:0 6px 18px rgba(53,96,159,.35);cursor:pointer;opacity:0;visibility:hidden;transform:translateY(12px);transition:opacity .25s,transform .25s,visibility .25s}
 .totop.show{opacity:1;visibility:visible;transform:none}
 .totop:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(53,96,159,.45)}
 .totop svg{width:20px;height:20px}
 @media(max-width:700px){.totop{right:14px;bottom:14px;width:42px;height:42px}}
-@media print{.totop{display:none!important}}
-.bar,.action-bar{background:#fff!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}.subnav{position:sticky;top:var(--bar-h,57px);z-index:99;background:#fff;margin-top:-1px;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid #e2e8f0}
-.sn-in{max-width:1140px;margin:0 auto;padding:0 20px;display:flex;align-items:center;gap:16px;height:50px}
-.sn-cats{flex:1;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;height:100%;align-items:stretch}.sn-cats::-webkit-scrollbar{display:none}
-.sn-cats{gap:6px!important;align-items:center!important}
+@media print{.totop,.subnav{display:none!important}}
+.bar,.action-bar{position:sticky!important;top:0!important;z-index:100!important;background:#fff!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+.bar-in{position:relative;flex-wrap:nowrap!important}.action-bar-inner{position:relative}
+.subnav{position:sticky!important;top:var(--bar-h,54px)!important;z-index:99!important;background:#fff!important;margin-top:-1px;border-bottom:1px solid #e2e8f0;box-shadow:0 4px 12px -4px rgba(15,23,42,.05)}
+.sn-in{max-width:1140px;margin:0 auto;padding:0 20px;display:flex;align-items:center;gap:12px;height:50px}
+.sn-cats{flex:1;display:flex;gap:6px!important;overflow-x:auto;scrollbar-width:none;height:100%;align-items:center!important}.sn-cats::-webkit-scrollbar{display:none}
 .sn-l{display:flex;align-items:center;height:32px;padding:0 14px;border-radius:999px;font:700 11.5px Inter,-apple-system,sans-serif;letter-spacing:.09em;text-transform:uppercase;color:#475569;text-decoration:none;white-space:nowrap;border:1px solid transparent;transition:all .18s}
 .sn-l:hover{color:#35609f;background:#eef3fa}
 .sn-l.on{color:#fff;background:linear-gradient(135deg,#6b9be0,#35609f);box-shadow:0 3px 10px rgba(53,96,159,.28)}
 .sn-c{margin-left:7px;font-size:10px;font-weight:700;padding:1px 6px;border-radius:999px;background:rgba(100,116,139,.12);color:inherit;letter-spacing:0}.sn-l.on .sn-c{background:rgba(255,255,255,.25)}
-.sn-sbtn,.sn-sbtn svg{display:none!important}
-.sn-cats{-webkit-mask-image:linear-gradient(90deg,#000 92%,transparent);mask-image:linear-gradient(90deg,#000 92%,transparent);padding-right:24px}
+.sn-tog{display:none}
+.sn-search{position:relative;display:flex;align-items:center;margin-left:auto;flex-shrink:0}
+.sn-sbtn{display:grid;place-items:center;width:38px;height:38px;border-radius:10px;border:1px solid #e2e8f0;background:#f8fafc;color:#35609f;cursor:pointer;flex-shrink:0;transition:all .18s}
+.sn-sbtn:hover{background:#eef3fa;border-color:#6b9be0;box-shadow:0 2px 8px rgba(53,96,159,.15)}
+.sn-sbtn svg{width:17px;height:17px;display:block}
+.sn-sico,.sn-search input,.sn-xbtn{display:none}
+.sn-search input::-webkit-search-cancel-button{display:none}
+.sn-search.open{width:280px}
+.sn-search.open .sn-sbtn{display:none}
+.sn-search.open .sn-sico{display:flex;position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#64748b;pointer-events:none}
+.sn-search.open .sn-sico svg{width:16px;height:16px}
+.sn-search.open input{display:block;width:100%;height:38px;padding:0 34px 0 36px;border:1px solid #6b9be0;border-radius:999px;background:#fff;font:14px Inter,-apple-system,sans-serif;color:#0f172a;outline:none;box-shadow:0 0 0 3px rgba(74,123,200,.18)}
+.sn-search.open .sn-xbtn{display:grid;place-items:center;position:absolute;right:6px;top:50%;transform:translateY(-50%);width:26px;height:26px;border:0;border-radius:999px;background:transparent;color:#64748b;font-size:18px;line-height:1;cursor:pointer}
+.sn-search.open .sn-xbtn:hover{background:#f1f5f9;color:#0f172a}
 @media(max-width:700px){
+.bar{padding:8px 12px}
 .sn-in{flex-wrap:wrap!important;height:auto!important;padding:7px 12px!important;gap:8px!important;position:relative}
 .sn-tog{flex:1;display:flex;align-items:center;gap:10px;height:38px;padding:0 14px;border:1px solid #e2e8f0;border-radius:10px;background:#f8fafc;font:700 11.5px Inter,-apple-system,sans-serif;letter-spacing:.09em;text-transform:uppercase;color:#35609f;cursor:pointer;text-align:left}
 .sn-tog span{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -172,26 +189,14 @@ const SUBNAV_CSS = `.totop{position:fixed;right:20px;bottom:20px;z-index:200;wid
 .sn-chev{color:#64748b;transition:transform .25s}
 .subnav.open .sn-chev{transform:rotate(180deg)}
 .subnav.open .sn-tog{border-color:#6b9be0;background:#fff}
-.sn-cats{order:3;flex:0 0 100%!important;width:100%;display:flex!important;flex-direction:column;align-items:stretch!important;gap:2px!important;height:auto!important;max-height:0;overflow:hidden!important;padding:0!important;-webkit-mask-image:none!important;mask-image:none!important;transition:max-height .3s ease,padding .3s ease}
+.sn-cats{order:3;flex:0 0 100%!important;width:100%;display:flex!important;flex-direction:column;align-items:stretch!important;gap:2px!important;height:auto!important;max-height:0;overflow:hidden!important;padding:0!important;transition:max-height .3s ease,padding .3s ease}
 .subnav.open .sn-cats{max-height:70vh;overflow-y:auto!important;padding:4px 0 6px!important}
 .sn-l{width:100%;height:42px!important;padding:0 14px!important;border-radius:10px!important;font-size:12px!important;justify-content:space-between;flex-shrink:0}
 .sn-c{display:inline-block!important}
-.sn-search{width:auto!important;order:1!important;position:static!important}
-.sn-search>svg,.sn-search input{display:none}
-.sn-sbtn{display:grid!important;place-items:center;width:38px;height:38px;border-radius:10px;border:1px solid #e2e8f0;background:#f8fafc;color:#475569;cursor:pointer;flex-shrink:0}
-.sn-sbtn svg{display:block!important;position:static!important;transform:none!important;width:16px;height:16px}
-.sn-search.open{position:absolute!important;left:0;right:0;top:0;height:52px;background:#fff;display:flex;align-items:center;padding:0 12px;z-index:5}
-.sn-search.open .sn-sbtn{display:none!important}
-.sn-search.open>svg{display:block;left:24px}
-.sn-search.open input{display:block;height:38px}
-}
-.sn-tog{display:none}
-@media(max-width:700px){.sn-tog{display:flex}}
-.sn-search{position:relative;width:240px;flex-shrink:0}
-.sn-search>svg{position:absolute;left:11px;top:50%;width:15px;height:15px;transform:translateY(-50%);color:#94a3b8;pointer-events:none}
-.sn-search input{width:100%;height:34px;padding:0 12px 0 33px;border:1px solid #e2e8f0;border-radius:999px;background:#f8fafc;font:14px Inter,-apple-system,sans-serif;color:#0f172a;outline:none;transition:all .15s}
-.sn-search input:focus{background:#fff;border-color:#6b9be0;box-shadow:0 0 0 3px rgba(74,123,200,.18)}
-@media(max-width:700px){.bar,.action-bar{position:relative!important}}`;
+.sn-search.open{position:absolute;inset:0;width:100%;background:#fff;z-index:10;padding:0 4px}
+.sn-search.open .sn-sico{left:16px}
+.sn-search.open .sn-xbtn{right:10px}
+}`;
 
 function layout({ title, desc, canonical, active, body, image, jsonld, robots, cat = '', q = '' }) {
   return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -204,8 +209,7 @@ ${FAVICON}<meta name="theme-color" content="#ffffff">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Montserrat:wght@300;800&family=Caveat:wght@700&family=Inter:wght@400;600;700;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
 <style>${CSS}${SUBNAV_CSS}</style>${jsonld ? `<script type="application/ld+json">${JSON.stringify(jsonld).replace(/</g, '\\u003c')}</script>` : ''}</head><body>
-<header class="bar"><div class="bar-in"><a href="/" class="brand" aria-label="Kaushik Sarkar Blogs home"><div class="logo">${LOGO}</div><span class="bn"><span class="tw" data-text="KAUSHIK SARKAR" aria-label="Kaushik Sarkar">KAUSHIK SARKAR</span><span class="bn-blog">Blogs</span></span></a>
-</div></header>
+<header class="bar"><div class="bar-in"><a href="/" class="brand" aria-label="Kaushik Sarkar Blogs home"><div class="logo">${LOGO}</div><span class="bn"><span class="tw" data-text="KAUSHIK SARKAR" aria-label="Kaushik Sarkar">KAUSHIK SARKAR</span><span class="bn-blog">Blogs</span></span></a>${hdrSearch(q)}</div></header>
 ${subnav(cat, q, active === 'blog' && canonical === SITE + '/')}
 <main>${body}</main>
 <footer class="site"><div class="in"><span>© ${new Date().getFullYear()} Kaushik Sarkar · kaushiksarkar.com</span><span><a href="/">Blogs</a><a href="/resume">Resume</a><a href="https://www.linkedin.com/in/kaushik-sarkar-93115728/" rel="noopener" target="_blank">LinkedIn</a><a class="pg" href="https://promptgrabber.com" target="_blank" rel="noopener">More AI prompts at PromptGrabber.com →</a></span></div></footer>
@@ -297,7 +301,7 @@ http.createServer(async (req, res) => {
     if (p === '/' && u.searchParams.get('category')) { const c = slugify(u.searchParams.get('category')); res.writeHead(301, { Location: `/category/${c}` }); return res.end(); }
     if (p === '/' && u.searchParams.get('q')) { res.writeHead(301, { Location: `/search?q=${encodeURIComponent(u.searchParams.get('q'))}` }); return res.end(); }
     if (p === '/') return send(res, 200, 'text/html; charset=utf-8', await listPage(pg));
-    if (p === '/resume' || p === '/resume.html') return send(res, 200, 'text/html; charset=utf-8', RESUME.replace('</style>', SUBNAV_CSS + '</style>').replace('</header>', '</header>' + subnav('__resume')).replace('</body>', BARJS + '</body>'), 600);
+    if (p === '/resume' || p === '/resume.html') return send(res, 200, 'text/html; charset=utf-8', RESUME.replace('</style>', SUBNAV_CSS + '</style>').replace('</div>\n    </div>\n  </header>', hdrSearch('') + '</div>\n    </div>\n  </header>').replace('</header>', '</header>' + subnav('__resume')).replace('</body>', BARJS + '</body>'), 600);
     if (p === '/index.html' || p === '/blog' || p === '/blogs') { res.writeHead(301, { Location: '/' }); return res.end(); }
     let m = p.match(/^\/blog\/([a-z0-9-]+)$/i);
     if (m) { const h = await postPage(m[1]); return h ? send(res, 200, 'text/html; charset=utf-8', h) : send(res, 404, 'text/html; charset=utf-8', notFound()); }
